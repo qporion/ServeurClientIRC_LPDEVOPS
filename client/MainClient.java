@@ -16,7 +16,7 @@ public class MainClient {
     }
 
     private static void printUsage() {
-        System.out.println("java client.Client <address> <port>");
+        System.out.println("java client.MainClient <address> <port>");
         System.out.println("\t<address>: server's ip address");
         System.out.println("\t<port>: server's port");
     }

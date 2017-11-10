@@ -1,13 +1,17 @@
 package server;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Server {
 	int port;
 	List<ConnectedClient> clients = new ArrayList<>();
 	
-	public Server (int port) {
+	public Server (int port) throws IOException {
 		this.port = port;
+		Connection con = new Connection(this);
+		Thread t = new Thread(con);
+		t.start();
 	}
 	
 	public void addClient (ConnectedClient client) {

@@ -19,6 +19,12 @@ public class Client {
             this.socket = new Socket(address, port);
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new PrintWriter(this.socket.getOutputStream());
+            
+            Thread rec = new Thread(new ClientReceive(this, this.in));
+            Thread send = new Thread(new ClientSend(this.out));
+            
+            rec.start();
+            send.start();
         } catch(IOException e)  {
             e.printStackTrace();
         }
