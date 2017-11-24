@@ -5,9 +5,11 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 
 import javax.crypto.Cipher;
@@ -36,13 +38,4 @@ public class MainClient {
 		System.out.println("\t<port>: server's port");
 	}
 
-	private static String bytesToHex(byte[] hash) {
-		StringBuffer hexString = new StringBuffer();
-		for (int i = 0; i < hash.length; i++) {
-			String hex = Integer.toHexString(0xff & hash[i]);
-			if(hex.length() == 1) hexString.append('0');
-				hexString.append(hex);
-			}
-			return hexString.toString();
-		}
 }

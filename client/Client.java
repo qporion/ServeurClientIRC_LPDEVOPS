@@ -3,25 +3,26 @@ package client;
 import java.net.*;
 import java.io.*;
 
-
+import auth.Session;
 
 public class Client {
     public String address;
     public int port;
     public Socket socket;
-    public BufferedReader in;
-    public PrintWriter out;
+    public ObjectInputStream in;
+    public ObjectOutputStream out;
+    public Session session;
     
     public Client(String address, int port){
         this.address = address;
         this.port = port;
+        this.session = new Session(null, 0);
+        
         try {
             this.socket = new Socket(address, port);
-            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.out = new PrintWriter(this.socket.getOutputStream());
             
-            Thread rec = new Thread(new ClientReceive(this, this.in));
-            Thread send = new Thread(new ClientSend(this.out));
+            Thread rec = new Thread(new ClientReceive(this, this.socket));
+            Thread send = new Thread(new ClientSend(this, this.socket));
             
             rec.start();
             send.start();
@@ -41,8 +42,15 @@ public class Client {
             e.printStackTrace();
         }
         System.exit(0);
-        
-        
+       
+    }
+    
+    public Session getSession() {
+    	return this.session;
+    }
+    
+    public void setSession (Session session) {
+    	this.session = session;
     }
     
 }
