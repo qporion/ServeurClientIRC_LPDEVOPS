@@ -24,29 +24,33 @@ public class ConnectedClient implements Runnable {
 		this.server = server;
 		this.sock = sock;
         
-        System.out.println("Nouvelle connexion, id = "+this.id);
+        System.out.println("Nouvelle connexion, id = "+this.id+", ip = "+this.sock.getInetAddress().toString());
 	}
 
 	@Override
 	public void run(){
 		
+		try {
+			this.in = new ObjectInputStream(this.sock.getInputStream()); 
+			this.out = new ObjectOutputStream(this.sock.getOutputStream());	
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+			
+		
 		while(this.sock.isConnected()) {
 			
 			try {
-				this.in = new ObjectInputStream(this.sock.getInputStream()); 
-				this.out = new ObjectOutputStream(this.sock.getOutputStream());
-				
 				this.session = (Session) in.readObject();
-			} catch (IOException | ClassNotFoundException e1) {
-				e1.printStackTrace();
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
 			}
-				
-			if(session != null) {
+			
+			if(this.session.getMessage() != null) {
 				String message = this.session.getMessage();
-				System.out.println("Message de recu de "+this.session.getLogin()+" : "+message);
+				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);				
 				
-				
-				if (this.session.isConnected()) {
+				if (this.session.isConnected() == 1) {
 					if (this.session.getPrivateId() != -1)
 						this.server.privateMessage(message, this.id, this.session.getPrivateId());
 					else
@@ -54,21 +58,22 @@ public class ConnectedClient implements Runnable {
 				} else {
 					UsersRepository db = UsersRepository.getInstance();
 					
-					session.setConnected(db.login(this.session.getLogin(), this.session.getMessage()));
-					
-					System.out.println(session.isConnected());
-					session.setMessage("Vous etes auth");
-					this.sendMessage(session);
-					
+					//db.newLogin(this.session.getLogin(), this.session.encryptedMessage());
+					if(db.login(this.session.getLogin(), this.session.getMessage())) {
+						session.setConnected(1);
+						session.setMessage("Vous etes auth");
+						this.sendMessage(session);
+					}
+					else {
+						session.setConnected(-1);
+					}
+									
 					this.server.getClients().remove(this);
 					this.server.getAuthClients().add(this);
 				}
 			} else {
 				this.server.disconnectedClient(this);
-				
 			}
-			
-			
 		}
 	}
 	

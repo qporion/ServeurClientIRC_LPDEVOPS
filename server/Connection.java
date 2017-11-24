@@ -13,7 +13,7 @@ public class Connection implements Runnable{
 	
 	public Connection (Server server) throws IOException {
 		this.server = server;
-		this.server.setSession(new Session("Serveur", true));
+		this.server.setSession(new Session("Serveur", 1));
 				
 		this.sSocket = new ServerSocket(server.getPort());
 	}

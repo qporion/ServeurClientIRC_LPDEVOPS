@@ -11,11 +11,11 @@ public class Session implements Serializable{
 	private static final long serialVersionUID = -6425471594092345976L;
 
 	private String login, message;
-	private boolean isConnected = false, reply = false;;
+	private int isConnected = 0;
 	private int privateId = -1; 
 	
 
-	public Session (String login, boolean isConnected) {
+	public Session (String login, int isConnected) {
 		this.login = login;
 		this.isConnected = isConnected;
 	}
@@ -36,11 +36,11 @@ public class Session implements Serializable{
 		this.message = message;
 	}
 
-	public boolean isConnected() {
+	public int isConnected() {
 		return isConnected;
 	}
 
-	public void setConnected(boolean isConnected) {
+	public void setConnected(int isConnected) {
 		this.isConnected = isConnected;
 	}
 	
@@ -52,22 +52,17 @@ public class Session implements Serializable{
 		this.privateId = privateId;
 	}
 	
-	public void encrypt() {
-		String message = "Password";
-
+	public String encryptedMessage() {
 		MessageDigest digest = null;
 		try {
 			digest = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		byte[] encodedhash = digest.digest(message
-				.getBytes(StandardCharsets.UTF_8));
+		byte[] encodedhash = digest.digest(message.getBytes(StandardCharsets.UTF_8));
 
-		System.out.println(bytesToHex(encodedhash) + "      "
-				+ Arrays.toString(encodedhash));
+		return bytesToHex(encodedhash);
 	}
 	
 	private static String bytesToHex(byte[] hash) {

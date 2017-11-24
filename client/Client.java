@@ -16,7 +16,7 @@ public class Client {
     public Client(String address, int port){
         this.address = address;
         this.port = port;
-        this.session = new Session(null, false);
+        this.session = new Session(null, 0);
         
         try {
             this.socket = new Socket(address, port);

@@ -52,7 +52,6 @@ public class UsersRepository {
 		ResultSet result;
 		try {
 			String query = "SELECT * FROM IRC_USERS where login = '"+login+"' and password = '"+pwd+"'";
-			System.out.println(query);
 			result = stmt.executeQuery(query);
 			
 			int cpt = 0;
@@ -66,6 +65,15 @@ public class UsersRepository {
 		}
 		
 		return false;
+	}
+	
+	public void newLogin (String login, String pwd) {
+		String query = "INSERT INTO IRC_USERS(login, password) VALUES ('"+login+"','"+pwd+"')";
+		try {
+			stmt.executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void close() {

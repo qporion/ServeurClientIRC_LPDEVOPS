@@ -27,7 +27,6 @@ public class Server {
 	public void broadcastMessage (String message, Session session) {
 		for(ConnectedClient client : this.authClients)  {
 			if (session != client.getSession()) {
-				message = "Message de "+session.getLogin()+" : "+message;
 				this.session.setMessage(message);
 				client.sendMessage(this.session);	
 			}

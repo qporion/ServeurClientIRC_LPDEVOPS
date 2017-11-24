@@ -23,22 +23,28 @@ public class ClientSend implements Runnable {
 
 			this.out = new ObjectOutputStream(this.sock.getOutputStream());
 
-			while (!this.client.getSession().isConnected()) {
-				System.out.print("Votre login >> ");
-				this.client.getSession().setLogin(sc.nextLine());
-
-				System.out.print("Votre password >> ");
-				String msg = sc.nextLine();
-
-				this.client.getSession().setMessage(msg);
-
-				out.writeObject(this.client.getSession());
-				out.flush();
+			while (this.client.getSession().isConnected() != 1) {
 				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if (this.client.getSession().isConnected() == 0) {
+					
+					synchronized (this.client) {
+						System.out.print("Votre login >> ");
+						this.client.getSession().setLogin(sc.nextLine());
+		
+						System.out.print("Votre password >> ");
+						String msg = sc.nextLine();
+		
+						this.client.getSession().setMessage(msg);
+						this.client.getSession().setMessage(this.client.getSession().encryptedMessage());
+						out.writeObject(this.client.getSession());
+						out.flush();
+						
+						this.client.getSession().setConnected(-2);
+					}
+				}
+				else if (this.client.getSession().isConnected() == -1) {
+					System.out.println("Mauvais login / mot de passe");
+					this.client.getSession().setConnected(0);
 				}
 			}
 
@@ -46,7 +52,6 @@ public class ClientSend implements Runnable {
 				System.out.print("Votre message >> ");
 				String msg = sc.nextLine();
 				this.client.getSession().setMessage(msg);
-
 				out.writeObject(this.client.getSession());
 				out.flush();
 			}

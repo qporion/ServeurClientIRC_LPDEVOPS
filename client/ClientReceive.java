@@ -30,7 +30,15 @@ public class ClientReceive implements Runnable {
 		while (isActive) {
 			String message = null;
 			try {
-				this.client.setSession((Session) in.readObject());
+				
+				if (this.client.getSession().isConnected() != 1) {
+					synchronized (this.client) {
+						this.client.setSession((Session) in.readObject());
+					}
+				}
+				else {
+					this.client.getSession().setMessage(((Session) in.readObject()).getMessage());
+				}
 				message = this.client.getSession().getMessage();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
