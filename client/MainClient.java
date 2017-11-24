@@ -20,7 +20,7 @@ import sun.security.krb5.internal.crypto.Aes256;
 public class MainClient {
 
 	public static void main(String[] args) {
-		String message = "PasswordUti";
+		String message = "Password";
 
 		MessageDigest digest = null;
 		try {
