@@ -3,9 +3,13 @@ package server;
 import java.io.IOException;
 import java.util.*;
 
+import auth.Session;
+
 public class Server {
-	int port;
-	List<ConnectedClient> clients = new ArrayList<>();
+	private int port;
+	private List<ConnectedClient> clients = new ArrayList<>();
+	private List<ConnectedClient> authClients = new ArrayList<>();
+	private Session session;
 	
 	public Server (int port) throws IOException {
 		this.port = port;
@@ -15,31 +19,25 @@ public class Server {
 	}
 	
 	public void addClient (ConnectedClient client) {
-		String msg = "Le client "+client.getId()+" vient de se connecter !";
-		this.broadcastMessage(msg, -1);
+		/*String msg = "Le client "+client.getSession().getLogin()+" vient de se connecter !";
+		this.broadcastMessage(msg, -1);*/
 		this.clients.add(client);
 	}
 	
-	public void broadcastMessage (String message, int id) {
-		for(ConnectedClient client : this.clients)  {
-			
-			switch (id) {
-				case -1:
-					message = "Server : "+message;
-					client.sendMessage(message);
-					break;
-				default:
-					if (client.getId() != id)
-						message = "Message de "+id+" : "+message;
+	public void broadcastMessage (String message, Session session) {
+		for(ConnectedClient client : this.authClients)  {
+			if (session != client.getSession()) {
+				message = "Message de "+session.getLogin()+" : "+message;
+				this.session.setMessage(message);
+				client.sendMessage(this.session);	
 			}
-			
 		}
 	}
 	
 	public void privateMessage (String msg, int idSend, int idRec) {
 		ConnectedClient send = null, rec = null;
 		
-		for(ConnectedClient client : this.clients)  {
+		for(ConnectedClient client : this.authClients)  {
 			if(client.getId() == idSend) {
 				send = client;				
 			}
@@ -48,22 +46,44 @@ public class Server {
 			}
 		}
 		
-		if (rec == null && send != null)
-			send.sendMessage("Impossible de trouver le destinataire");
+		if (rec == null && send != null) {
+			//send.sendMessage("Impossible de trouver le destinataire");
+		}
 		else if (rec != null && send != null) {
 			msg = "Message privé de "+send.getId()+" : "+msg;
-			rec.sendMessage(msg);
+			rec.getSession().setMessage(msg);
+			rec.sendMessage(rec.getSession());
 		}
 	}
 	
 	public void disconnectedClient (ConnectedClient client) {
-		this.clients.remove(client);
-		String msg = "Le client "+client.getId()+" vient de se déconnecter !";
-		this.broadcastMessage(msg, -1);
+		this.authClients.remove(client);
+		/*String msg = "Le client "+client.getId()+" vient de se déconnecter !";
+		this.broadcastMessage(msg, this.session);*/
 	}
 	
 	public int getPort () {
 		return this.port;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	
+	public List<ConnectedClient> getClients() {
+		return clients;
+	}
+
+	public void setClients(List<ConnectedClient> clients) {
+		this.clients = clients;
+	}
+
+	public List<ConnectedClient> getAuthClients() {
+		return authClients;
+	}
+
+	public void setAuthClients(List<ConnectedClient> authClients) {
+		this.authClients = authClients;
 	}
 
 }

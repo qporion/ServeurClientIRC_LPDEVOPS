@@ -1,10 +1,23 @@
 package server;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 
 public class MainServer {
 
 	public static void main(String[] args) throws IOException {
+		UsersRepository db = UsersRepository.getInstance();
+		db.init();
+		
 		if (args.length != 1) {
 			printUsage();
 		} else {
