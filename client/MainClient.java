@@ -20,50 +20,6 @@ import sun.security.krb5.internal.crypto.Aes256;
 public class MainClient {
 
 	public static void main(String[] args) {
-		String message = "PasswordUti";
-
-		MessageDigest digest = null;
-		try {
-			digest = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		byte[] encodedhash = digest.digest(
-				message.getBytes(StandardCharsets.UTF_8));
-
-		System.out.println(bytesToHex(encodedhash)+"      "+Arrays.toString(encodedhash));
-		
-		Connection con = null;
-	      ResultSet résultats = null;
-	      String requete = "";
-
-	      // chargement du pilote
-
-	      try {
-	         Class.forName("oracle.jdbc.OracleDriver");
-	      } catch (ClassNotFoundException e) {
-	         e.printStackTrace();
-	      }
-
-	      //connection a la base de données
-
-
-	      System.out.println("connexion a la base de données");
-	      try {
-
-	         con = DriverManager.getConnection("jdbc:oracle:thin:@iutdoua-oracle.univ-lyon1.fr:1521:orcl", "p1712620", "303176");
-	      } catch (SQLException e) {
-	         e.printStackTrace();
-	      }
-
-	      //insertion d'un enregistrement dans la table client 
-
-	      System.out.println("creation enregistrement");
-	      
-	      
-		System.exit(0);
 		if (args.length != 2) {
 			printUsage();
 		} else {
