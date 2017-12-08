@@ -1,5 +1,5 @@
 
-package test;
+package client;
 
 
 import javafx.event.ActionEvent;
@@ -26,8 +26,14 @@ class ClientPanel extends Parent {
     //Label connectés:
     Text textMembers;
     
+    Client client;
+    
     
     public ClientPanel(){
+        
+        this.client = new Client("127.0.0.1", new Integer(8080));
+        this.client.setClientPanel(this);
+        
         //zone de texte
         this.textToSend = new TextArea();
         textToSend.setLayoutX(50);
@@ -68,11 +74,18 @@ class ClientPanel extends Parent {
         sendBtn.setOnAction( new EventHandler<ActionEvent>(){
             @Override
             public void handle (ActionEvent event){
-                Label newLabel = new Label();
-                newLabel.setText(textToSend.getText());
-                newLabel.setPrefWidth(400);
-                receivedText.getChildren().add( newLabel);
-                
+                if (client.getSession().getLogin().equals("")) {
+                    client.getSession().setLogin(textToSend.getText());
+                    textToSend.setText("");
+                } else {
+                    Label newLabel = new Label();
+                    newLabel.setText(textToSend.getText());
+                    newLabel.setPrefWidth(400);
+                    receivedText.getChildren().add( newLabel);
+                    client.getSession().setMessage(textToSend.getText());
+                    client.getSession().setSendMessage(true);
+                    textToSend.setText("");
+                }
             }
         });
      
@@ -110,14 +123,5 @@ class ClientPanel extends Parent {
         textMembers.setLayoutY(50);
         
         this.getChildren().add(textMembers);
-        
-        
-        
-        
-        
-    }
-    
-    
-    
-    
+    }   
 }

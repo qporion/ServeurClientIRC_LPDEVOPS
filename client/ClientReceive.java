@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import auth.Session;
+import javafx.scene.control.Label;
 
 public class ClientReceive implements Runnable {
 	public Client client;
@@ -32,9 +33,7 @@ public class ClientReceive implements Runnable {
 			try {
 				
 				if (this.client.getSession().isConnected() != 1) {
-					synchronized (this.client) {
-						this.client.setSession((Session) in.readObject());
-					}
+				    this.client.setSession((Session) in.readObject());
 				}
 				else {
 					this.client.getSession().setMessage(((Session) in.readObject()).getMessage());
@@ -46,8 +45,10 @@ public class ClientReceive implements Runnable {
 			}
 
 			if (this.client.getSession() != null) {
-				System.out.println("\nMessage recu de " + this.client.getSession().getLogin()
-						+ " : " + message);
+                            Label newLabel = new Label();
+                            newLabel.setText(message);
+                            newLabel.setPrefWidth(400);
+                            this.client.getClientPanel().receivedText.getChildren().add( newLabel);
 			} else {
 				isActive = false;
 			}

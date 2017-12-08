@@ -10,9 +10,10 @@ public class Session implements Serializable{
 
 	private static final long serialVersionUID = -6425471594092345976L;
 
-	private String login, message;
+	private String login = "", message;
 	private int isConnected = 0;
 	private int privateId = -1; 
+        private boolean sendMessage = false;
 	
 
 	public Session (String login, int isConnected) {
@@ -51,7 +52,15 @@ public class Session implements Serializable{
 	public void setPrivateId(int privateId) {
 		this.privateId = privateId;
 	}
-	
+
+    public boolean isSendMessage() {
+        return sendMessage;
+    }
+
+    public void setSendMessage(boolean sendMessage) {
+        this.sendMessage = sendMessage;
+    }
+    
 	public String encryptedMessage() {
 		MessageDigest digest = null;
 		try {
