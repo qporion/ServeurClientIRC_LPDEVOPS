@@ -2,6 +2,7 @@
 package client;
 
 
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,13 +13,15 @@ public class Interface extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        ClientPanel clientPanel = new ClientPanel();
+        AuthPanel authPanel = new AuthPanel();
         Group root = new Group();
-        root.getChildren().add(clientPanel);
-        Scene scene = new Scene (root, 600, 500);
+        root.getChildren().add(authPanel);
+        Scene scene = new Scene (root, 260, 160);
         stage.setTitle("Mon chat");
         stage.setScene(scene);
         stage.show();
+      
+       
     
          }
     public static void main (String[] args){
