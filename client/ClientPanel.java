@@ -2,6 +2,9 @@
 package client;
 
 
+import java.io.IOException;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -85,6 +88,7 @@ class ClientPanel extends Parent {
                     client.getSession().setMessage(textToSend.getText());
                     client.getSession().setSendMessage(true);
                     textToSend.setText("");
+			
                 }
             }
         });
@@ -124,4 +128,18 @@ class ClientPanel extends Parent {
         
         this.getChildren().add(textMembers);
     }   
+    
+    public void updateTextArea (final String msg) {
+    	Platform.runLater(new Runnable(){
+            @Override
+            public void run() {
+            	Label newLabel = new Label();
+        		newLabel.setText(msg);
+        		newLabel.setPrefWidth(400);
+        		client.getClientPanel().receivedText.getChildren().add(newLabel);
+            }
+        });
+    	
+    	
+    }
 }

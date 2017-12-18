@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
 import javafx.scene.control.Label;
 
 public class ClientSend implements Runnable {
@@ -22,32 +23,32 @@ public class ClientSend implements Runnable {
 		try {
 
 			this.out = new ObjectOutputStream(this.sock.getOutputStream());
-
 			while (this.client.getSession().isConnected() != 1) {
-                            if (this.client.getSession().isSendMessage()) {
-				if (this.client.getSession().isConnected() == 0) {
-                                    this.client.getSession().setMessage(this.client.getSession().encryptedMessage());
-                                    out.writeObject(this.client.getSession());
-                                    out.flush();
-
-                                    this.client.getSession().setConnected(-2);
+				Thread.yield();
+				if (this.client.getSession().isSendMessage()) {
+					if (this.client.getSession().isConnected() == 0) {
+						this.client.getSession().setMessage(
+								this.client.getSession().encryptedMessage());
+						out.writeObject(this.client.getSession());
+						out.flush();
+						this.client.getSession().setConnected(-2);
+					} else if (this.client.getSession().isConnected() == -1) {
+						this.client.getClientPanel().updateTextArea("Mauvais mot de passe / login");
+						this.client.getSession().setConnected(0);
+					}
+					this.client.getSession().setSendMessage(false);
 				}
-				else if (this.client.getSession().isConnected() == -1) {
-                                        Label newLabel = new Label();
-                                        newLabel.setText("Mauvais login / mot de passe");
-                                        newLabel.setPrefWidth(400);
-                                        this.client.getClientPanel().receivedText.getChildren().add( newLabel);
-					this.client.getSession().setConnected(0);
-				}
-                                this.client.getSession().setSendMessage(false);
 			}
-                        }
 			while (true) {
-                            if (this.client.getSession().isSendMessage()) {
-				out.writeObject(this.client.getSession());
-				out.flush();
-                                this.client.getSession().setSendMessage(false);
-                            }
+				Thread.yield();
+				if (this.client.getSession().isSendMessage()) {
+	  				System.out.println(this.client.getSession().getMessage());
+						out.writeObject(this.client.getSession());
+						out.flush();
+						out.reset();
+						this.client.getSession().setSendMessage(false);
+			
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

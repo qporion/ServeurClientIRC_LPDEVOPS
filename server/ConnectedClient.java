@@ -41,11 +41,15 @@ public class ConnectedClient implements Runnable {
 		while(this.sock.isConnected()) {
 			
 			try {
-				this.session = (Session) in.readObject();
+				
+				Session ses = (Session) in.readObject();
+				this.session = ses;
+				
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
 			
+			System.out.println("Session de "+this.session.getLogin());
 			if(this.session.getMessage() != null) {
 				String message = this.session.getMessage();
 				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);				
@@ -61,15 +65,15 @@ public class ConnectedClient implements Runnable {
 					//db.newLogin(this.session.getLogin(), this.session.encryptedMessage());
 					if(db.login(this.session.getLogin(), this.session.getMessage())) {
 						session.setConnected(1);
-						session.setMessage("Vous etes auth");
+						session.setResponseMsg("Vous etes auth");
 						this.sendMessage(session);
+						
+						this.server.getClients().remove(this);
+						this.server.getAuthClients().add(this);
 					}
 					else {
 						session.setConnected(-1);
 					}
-									
-					this.server.getClients().remove(this);
-					this.server.getAuthClients().add(this);
 				}
 			} else {
 				this.server.disconnectedClient(this);
@@ -80,8 +84,10 @@ public class ConnectedClient implements Runnable {
 
 	public void sendMessage (Session session) {
 		try {
+			System.out.println(session.getResponseMsg());
 			this.out.writeObject(session);
 			this.out.flush();
+			this.out.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

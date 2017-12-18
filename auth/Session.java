@@ -10,7 +10,7 @@ public class Session implements Serializable{
 
 	private static final long serialVersionUID = -6425471594092345976L;
 
-	private String login = "", message;
+	private String login = "", message, responseMsg;
 	private int isConnected = 0;
 	private int privateId = -1; 
         private boolean sendMessage = false;
@@ -61,6 +61,14 @@ public class Session implements Serializable{
         this.sendMessage = sendMessage;
     }
     
+	public String getResponseMsg() {
+		return responseMsg;
+	}
+
+	public void setResponseMsg(String responseMsg) {
+		this.responseMsg = responseMsg;
+	}
+
 	public String encryptedMessage() {
 		MessageDigest digest = null;
 		try {

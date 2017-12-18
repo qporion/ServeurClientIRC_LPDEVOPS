@@ -30,25 +30,25 @@ public class ClientReceive implements Runnable {
 
 		while (isActive) {
 			String message = null;
+			
 			try {
+				Session session = (Session) in.readObject();
 				
 				if (this.client.getSession().isConnected() != 1) {
-				    this.client.setSession((Session) in.readObject());
+						this.client.setSession(session);
+					    this.client.getSession().setSendMessage(false);
 				}
 				else {
-					this.client.getSession().setMessage(((Session) in.readObject()).getMessage());
+					this.client.getSession().setResponseMsg(session.getResponseMsg());
 				}
-				message = this.client.getSession().getMessage();
+				message = session.getLogin()+" >> "+this.client.getSession().getResponseMsg();
 			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 
 			}
 
 			if (this.client.getSession() != null) {
-                            Label newLabel = new Label();
-                            newLabel.setText(message);
-                            newLabel.setPrefWidth(400);
-                            this.client.getClientPanel().receivedText.getChildren().add( newLabel);
+				this.client.getClientPanel().updateTextArea(message);
 			} else {
 				isActive = false;
 			}

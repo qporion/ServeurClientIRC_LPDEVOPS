@@ -13,6 +13,7 @@ public class Server {
 	
 	public Server (int port) throws IOException {
 		this.port = port;
+		this.session = new Session("Server", 1);
 		Connection con = new Connection(this);
 		Thread t = new Thread(con);
 		t.start();
@@ -25,9 +26,10 @@ public class Server {
 	}
 	
 	public void broadcastMessage (String message, Session session) {
+		this.session.setLogin(session.getLogin());
 		for(ConnectedClient client : this.authClients)  {
 			if (session != client.getSession()) {
-				this.session.setMessage(message);
+				this.session.setResponseMsg(message);
 				client.sendMessage(this.session);	
 			}
 		}
@@ -50,7 +52,7 @@ public class Server {
 		}
 		else if (rec != null && send != null) {
 			msg = "Message privé de "+send.getId()+" : "+msg;
-			rec.getSession().setMessage(msg);
+			rec.getSession().setResponseMsg(msg);
 			rec.sendMessage(rec.getSession());
 		}
 	}
