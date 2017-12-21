@@ -33,7 +33,9 @@ public class ClientReceive implements Runnable {
 			
 			try {
 				Session session = (Session) in.readObject();
-				
+                                System.out.println("BONJOUR");
+				session.getListeClients().forEach(client->System.out.println(client));
+                                System.out.flush();
 				if (this.client.getSession().isConnected() != 1) {
 						this.client.setSession(session);
 					    this.client.getSession().setSendMessage(false);
@@ -53,6 +55,7 @@ public class ClientReceive implements Runnable {
 				isActive = false;
 			}
 		}
+                
 		client.disconnectedServer();
 	}
 

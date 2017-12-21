@@ -13,9 +13,10 @@ public class Interface extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        AuthPanel authPanel = new AuthPanel();
+        //AuthPanel authPanel = new AuthPanel();
+        ClientPanel clientPanel = new ClientPanel();
         Group root = new Group();
-        root.getChildren().add(authPanel);
+        root.getChildren().add(clientPanel);
         Scene scene = new Scene (root, 260, 160);
         stage.setTitle("Mon chat");
         stage.setScene(scene);

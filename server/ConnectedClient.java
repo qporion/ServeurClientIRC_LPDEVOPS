@@ -52,8 +52,10 @@ public class ConnectedClient implements Runnable {
 			System.out.println("Session de "+this.session.getLogin());
 			if(this.session.getMessage() != null) {
 				String message = this.session.getMessage();
-				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);				
-				
+				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);
+                                //this.server.getAuthClients().forEach(tableauTest[]=session.getLogin());
+				this.server.getAuthClients().forEach(client->session.getListeClients().add(client.getSession().getLogin()));
+                                
 				if (this.session.isConnected() == 1) {
 					if (this.session.getPrivateId() != -1)
 						this.server.privateMessage(message, this.id, this.session.getPrivateId());

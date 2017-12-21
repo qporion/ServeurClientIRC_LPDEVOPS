@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Session implements Serializable{
 
@@ -14,7 +16,10 @@ public class Session implements Serializable{
 	private int isConnected = 0;
 	private int privateId = -1; 
         private boolean sendMessage = false;
+        private List<String> listeClients = new ArrayList<>();
 	
+        
+        
 
 	public Session (String login, int isConnected) {
 		this.login = login;
@@ -52,7 +57,22 @@ public class Session implements Serializable{
 	public void setPrivateId(int privateId) {
 		this.privateId = privateId;
 	}
+        
 
+         /**
+     * @return the listeClients
+     */
+    public List<String> getListeClients() {
+        return listeClients;
+    }
+
+    /**
+     * @param listeClients the listeClients to set
+     */
+    public void setListeClients(List<String> listeClients) {
+        this.listeClients = listeClients;
+    }
+    
     public boolean isSendMessage() {
         return sendMessage;
     }
@@ -68,7 +88,7 @@ public class Session implements Serializable{
 	public void setResponseMsg(String responseMsg) {
 		this.responseMsg = responseMsg;
 	}
-
+        
 	public String encryptedMessage() {
 		MessageDigest digest = null;
 		try {
@@ -92,4 +112,6 @@ public class Session implements Serializable{
 		}
 		return hexString.toString();
 	}
+
+   
 }
