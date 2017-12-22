@@ -15,11 +15,10 @@ public class Session implements Serializable{
 	private String login = "", message, responseMsg;
 	private int isConnected = 0;
 	private int privateId = -1; 
-        private boolean sendMessage = false;
-        private List<String> listeClients = new ArrayList<>();
-	
-        
-        
+
+   private boolean sendMessage = false, addUser = false;
+   private List<String> listeClients = new ArrayList<>();
+	    
 
 	public Session (String login, int isConnected) {
 		this.login = login;
@@ -88,7 +87,15 @@ public class Session implements Serializable{
 	public void setResponseMsg(String responseMsg) {
 		this.responseMsg = responseMsg;
 	}
-        
+	
+	public boolean isAddUser() {
+		return addUser;
+	}
+
+	public void setAddUser(boolean addUser) {
+		this.addUser = addUser;
+	}
+
 	public String encryptedMessage() {
 		MessageDigest digest = null;
 		try {

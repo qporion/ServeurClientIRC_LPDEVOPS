@@ -67,12 +67,13 @@ public class UsersRepository {
 		return false;
 	}
 	
-	public void newLogin (String login, String pwd) {
+	public boolean newLogin (String login, String pwd) {
 		String query = "INSERT INTO IRC_USERS(login, password) VALUES ('"+login+"','"+pwd+"')";
 		try {
 			stmt.executeQuery(query);
+			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
 	}
 	

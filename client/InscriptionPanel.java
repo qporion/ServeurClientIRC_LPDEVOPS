@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package client;
 
 import javafx.application.Platform;
@@ -18,16 +13,24 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class AuthPanel extends Parent implements ChangeablePanel{
+public class InscriptionPanel extends Parent implements ChangeablePanel{
 	TextField userTextField;
-	PasswordField pwBox;
+	PasswordField pwBox, pwBoxConfirm;
 	Label userName;
 	Label password;
+	Label errorLabel;
 	Button sendBtn;
 	Client client;
-	Label errorLabel;
 
-	public AuthPanel() {
+	public InscriptionPanel() {
+		
+		this.errorLabel = new Label("");
+		errorLabel.setLayoutX(70);
+		errorLabel.setLayoutY(0);
+		errorLabel.setPrefHeight(10);
+		errorLabel.setPrefWidth(100);
+		this.getChildren().add(errorLabel);
+		
 		// ////////////////user:
 		this.userName = new Label("Pseudo :");
 		userName.setLayoutX(70);
@@ -58,23 +61,44 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 		pwBox.setPrefHeight(10);
 		pwBox.setPrefWidth(100);
 		this.getChildren().add(pwBox);
+		
+		password = new Label("Confirmation du mdp :");
+		password.setLayoutX(70);
+		password.setLayoutY(110);
+		password.setPrefHeight(10);
+		password.setPrefWidth(150);
+		this.getChildren().add(password);
+		
+		this.pwBoxConfirm = new PasswordField();
+
+		pwBoxConfirm.setLayoutX(70);
+		pwBoxConfirm.setLayoutY(130);
+		pwBoxConfirm.setPrefHeight(10);
+		pwBoxConfirm.setPrefWidth(100);
+		this.getChildren().add(pwBoxConfirm);
 
 		// ////valider:
 
 		this.sendBtn = new Button();
 		sendBtn.setLayoutX(70);
-		sendBtn.setLayoutY(120);
+		sendBtn.setLayoutY(160);
 		sendBtn.setPrefHeight(10);
 		sendBtn.setPrefWidth(100);
 		sendBtn.setText("Valider");		
 		 sendBtn.setOnAction( new EventHandler<ActionEvent>(){
 	            @Override
 	            public void handle (ActionEvent event){
+	            	if (pwBox.getText().equals(pwBoxConfirm.getText())) {
 	                  client.getSession().setLogin(userTextField.getText());
 	                  client.getSession().setMessage(pwBox.getText());
 	                  pwBox.setText("");
-	                  
+	                  pwBoxConfirm.setText("");
+	                  client.getSession().setAddUser(true);
 	                  client.getSession().setSendMessage(true);
+	            	}
+	            	else {
+	            		errorLabel.setText("La confirmation du mdp est différente du mdp");
+	            	}
 	            }
 	        });
 		 this.getChildren().add(sendBtn);
@@ -92,13 +116,13 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 			}
 		});
 	}
-
+	
 	@Override
 	public void updateTextArea(final String msg) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				AuthPanel clientPanel = (AuthPanel) client.getClientPanel();
+				InscriptionPanel clientPanel = (InscriptionPanel) client.getClientPanel();
 				clientPanel.errorLabel.setText(msg);;
 			}
 		});		

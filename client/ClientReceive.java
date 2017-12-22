@@ -33,9 +33,16 @@ public class ClientReceive implements Runnable {
 			
 			try {
 				Session session = (Session) in.readObject();
-                                System.out.println("BONJOUR");
-				session.getListeClients().forEach(client->System.out.println(client));
-                                System.out.flush();
+        
+				this.client.getSession().setAddUser(false);
+				if (session.isConnected() == 1) {
+					ClientPanel newPanel = new ClientPanel();
+					newPanel.client = this.client;
+					this.client.getClientPanel().changeScene(newPanel);
+					this.client.setClientPanel(newPanel);
+					
+				}
+				
 				if (this.client.getSession().isConnected() != 1) {
 						this.client.setSession(session);
 					    this.client.getSession().setSendMessage(false);
@@ -50,7 +57,7 @@ public class ClientReceive implements Runnable {
 			}
 
 			if (this.client.getSession() != null) {
-				this.client.getClientPanel().updateTextArea(message);
+					this.client.getClientPanel().updateTextArea(message);
 			} else {
 				isActive = false;
 			}
