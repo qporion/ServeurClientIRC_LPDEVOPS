@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Interface extends Application {
-
 	static Client client; 
 	
 	@Override
@@ -27,5 +26,4 @@ public class Interface extends Application {
 		client = new Client(args[0], new Integer(args[1]));
 		Application.launch(Interface.class, args);
 	}
-
 }

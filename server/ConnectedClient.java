@@ -52,7 +52,9 @@ public class ConnectedClient implements Runnable {
 			System.out.println("Session de "+this.session.getLogin());
 			if(this.session.getMessage() != null) {
 				String message = this.session.getMessage();
-				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);				
+
+				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);
+        this.server.getAuthClients().forEach(client->session.getListeClients().add(client.getSession().getLogin()));
 				if (this.session.isAddUser()) {
 					 if(db.newLogin(this.session.getLogin(), this.session.getMessage())) {
 					session.setConnected(1);
@@ -64,7 +66,7 @@ public class ConnectedClient implements Runnable {
 					 }
 					 else {
 						 session.setConnected(-1);
-						 session.setResponseMsg("Login déjà utilisé");
+						 session.setResponseMsg("Login dï¿½jï¿½ utilisï¿½");
 						this.sendMessage(session);
 					 }
 				}

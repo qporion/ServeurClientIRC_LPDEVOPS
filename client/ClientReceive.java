@@ -33,7 +33,7 @@ public class ClientReceive implements Runnable {
 			
 			try {
 				Session session = (Session) in.readObject();
-				
+        
 				this.client.getSession().setAddUser(false);
 				if (session.isConnected() == 1) {
 					ClientPanel newPanel = new ClientPanel();
@@ -62,6 +62,7 @@ public class ClientReceive implements Runnable {
 				isActive = false;
 			}
 		}
+                
 		client.disconnectedServer();
 	}
 
