@@ -33,7 +33,7 @@ public class ClientSend implements Runnable {
 						out.flush();
 						this.client.getSession().setConnected(-2);
 					} else if (this.client.getSession().isConnected() == -1) {
-						this.client.getClientPanel().updateTextArea("Mauvais mot de passe / login");
+						//this.client.getClientPanel().updateTextArea("Mauvais mot de passe / login");
 						this.client.getSession().setConnected(0);
 					}
 					this.client.getSession().setSendMessage(false);

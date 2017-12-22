@@ -12,7 +12,7 @@ public class Client {
     public ObjectInputStream in;
     public ObjectOutputStream out;
     public Session session;
-    private ClientPanel clientPanel;
+    private ChangeablePanel clientPanel;
     
     public Client(String address, int port){
         this.address = address;
@@ -54,11 +54,11 @@ public class Client {
     	this.session = session;
     }
 
-    public ClientPanel getClientPanel() {
+    public ChangeablePanel getClientPanel() {
         return clientPanel;
     }
 
-    public void setClientPanel(ClientPanel clientPanel) {
+    public void setClientPanel(ChangeablePanel clientPanel) {
         this.clientPanel = clientPanel;
     }
     

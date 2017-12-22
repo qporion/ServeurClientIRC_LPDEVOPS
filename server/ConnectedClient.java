@@ -29,7 +29,7 @@ public class ConnectedClient implements Runnable {
 
 	@Override
 	public void run(){
-		
+		UsersRepository db = UsersRepository.getInstance();
 		try {
 			this.in = new ObjectInputStream(this.sock.getInputStream()); 
 			this.out = new ObjectOutputStream(this.sock.getOutputStream());	
@@ -53,28 +53,41 @@ public class ConnectedClient implements Runnable {
 			if(this.session.getMessage() != null) {
 				String message = this.session.getMessage();
 				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);				
-				
-				if (this.session.isConnected() == 1) {
-					if (this.session.getPrivateId() != -1)
-						this.server.privateMessage(message, this.id, this.session.getPrivateId());
-					else
-						this.server.broadcastMessage(message, this.session);
-				} else {
-					UsersRepository db = UsersRepository.getInstance();
+				if (this.session.isAddUser()) {
+					 if(db.newLogin(this.session.getLogin(), this.session.getMessage())) {
+					session.setConnected(1);
+					session.setResponseMsg("Bienvenue");
+					this.sendMessage(session);
 					
-					//db.newLogin(this.session.getLogin(), this.session.encryptedMessage());
-					if(db.login(this.session.getLogin(), this.session.getMessage())) {
-						session.setConnected(1);
-						session.setResponseMsg("Vous etes auth");
+					this.server.getClients().remove(this);
+					this.server.getAuthClients().add(this);
+					 }
+					 else {
+						 session.setConnected(-1);
+						 session.setResponseMsg("Login déjà utilisé");
 						this.sendMessage(session);
-						
-						this.server.getClients().remove(this);
-						this.server.getAuthClients().add(this);
-					}
-					else {
-						session.setConnected(-1);
-					}
+					 }
 				}
+				else {
+					if (this.session.isConnected() == 1) {
+						if (this.session.getPrivateId() != -1)
+							this.server.privateMessage(message, this.id, this.session.getPrivateId());
+						else
+							this.server.broadcastMessage(message, this.session);
+					} else {					
+						if(db.login(this.session.getLogin(), this.session.getMessage())) {
+							session.setConnected(1);
+							session.setResponseMsg("Vous etes auth");
+							this.sendMessage(session);
+							
+							this.server.getClients().remove(this);
+							this.server.getAuthClients().add(this);
+						}
+						else {
+							session.setConnected(-1);
+						}
+					}
+				}				
 			} else {
 				this.server.disconnectedClient(this);
 			}

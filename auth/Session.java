@@ -13,7 +13,7 @@ public class Session implements Serializable{
 	private String login = "", message, responseMsg;
 	private int isConnected = 0;
 	private int privateId = -1; 
-        private boolean sendMessage = false;
+    private boolean sendMessage = false, addUser = false;
 	
 
 	public Session (String login, int isConnected) {
@@ -67,6 +67,14 @@ public class Session implements Serializable{
 
 	public void setResponseMsg(String responseMsg) {
 		this.responseMsg = responseMsg;
+	}
+	
+	public boolean isAddUser() {
+		return addUser;
+	}
+
+	public void setAddUser(boolean addUser) {
+		this.addUser = addUser;
 	}
 
 	public String encryptedMessage() {
