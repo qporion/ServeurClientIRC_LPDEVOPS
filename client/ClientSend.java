@@ -34,7 +34,7 @@ public class ClientSend implements Runnable {
 						out.flush();
 						this.client.getSession().setConnected(-2);
 					} else if (this.client.getSession().isConnected() == -1) {
-						// this.client.getClientPanel().updateTextArea("Mauvais mot de passe / login");
+						this.client.getClientPanel().updateTextArea("Mauvais mot de passe / login");
 						this.client.getSession().setConnected(0);
 					}
 					this.client.getSession().setSendMessage(false);
@@ -49,36 +49,52 @@ public class ClientSend implements Runnable {
 						String msg = this.client.getSession().getMessage()
 								.substring("/chuchoter à ".length());
 
-						if (msg.length() <= "/chuchoter à ".length()) {
+						if (this.client.getSession().getMessage().length() <= "/chuchoter à ".length()+3) {
 							this.client
 									.getClientPanel()
 									.updateTextArea(
-											"Client >> Synthaxe : /chuchoter à [login] [message]");
+											"Client >> Synthax : /chuchoter à [login] [message]");
 						} else {
 							int idxLogin = msg.indexOf(" ");
 							String login = msg.substring(0, idxLogin);
-							msg = msg.substring(idxLogin + 1);
-							this.client.getSession().setMessage(msg);
 
-							if (this.client.getSession().getListeClients()
-									.containsValue(login)) {
+							if (idxLogin + 1 >= msg.length()) {
 								this.client
-										.getSession()
-										.getListeClients()
-										.forEach(
-												(key, value) -> {
-													if (value.equals(login)) {
-														this.client.getSession().setPrivateId(((Integer) key).intValue());
-													}
-												});
-
-								out.writeObject(this.client.getSession());
-								out.flush();
-								out.reset();
+										.getClientPanel()
+										.updateTextArea(
+												"Client >> Synthax : /chuchoter à [login] [message]");
 							} else {
-								this.client.getClientPanel().updateTextArea(
-										"Client >> Impossible de trouver l'utilisateur \""
-												+ login + "\"");
+								msg = msg.substring(idxLogin + 1);
+								this.client.getSession().setMessage(msg);
+
+								if (this.client.getSession().getListeClients()
+										.containsValue(login)) {
+									this.client
+											.getSession()
+											.getListeClients()
+											.forEach(
+													(key, value) -> {
+														if (value.equals(login)) {
+															this.client
+																	.getSession()
+																	.setPrivateId(
+																			((Integer) key)
+																					.intValue());
+														}
+													});
+
+									out.writeObject(this.client.getSession());
+									out.flush();
+									out.reset();
+									
+									this.client.getSession().setPrivateId(-1);
+
+								} else {
+									this.client.getClientPanel()
+											.updateTextArea(
+													"Client >> Impossible de trouver l'utilisateur \""
+															+ login + "\"");
+								}
 							}
 						}
 
@@ -95,5 +111,4 @@ public class ClientSend implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
 }
