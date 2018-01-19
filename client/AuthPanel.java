@@ -85,7 +85,7 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Scene scene = new Scene(panel);
+				Scene scene = new Scene(panel, 260, 160);
 				Stage appStage = (Stage) getScene().getWindow();
 				appStage.setScene(scene);
 				appStage.show();

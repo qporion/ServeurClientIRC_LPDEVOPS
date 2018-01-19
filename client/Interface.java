@@ -15,7 +15,7 @@ public class Interface extends Application {
 		client.setClientPanel(authPanel);
 		Group root = new Group();
 		root.getChildren().add(authPanel);
-		Scene scene = new Scene(root, 260, 160);
+		Scene scene = new Scene(root, 250, 250);
 		stage.setTitle("Mon chat");
 		stage.setScene(scene);
 		stage.show();
