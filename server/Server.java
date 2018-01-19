@@ -27,6 +27,9 @@ public class Server {
 	
 	public void broadcastMessage (String message, Session session) {
 		this.session.setLogin(session.getLogin());
+		
+		authClients.forEach(client -> this.session.getListeClients().put(client.getId(), client.getSession().getLogin()));
+		
 		for(ConnectedClient client : this.authClients)  {
 			if (session != client.getSession()) {
 				this.session.setResponseMsg(message);
@@ -47,11 +50,8 @@ public class Server {
 			}
 		}
 		
-		if (rec == null && send != null) {
-			//send.sendMessage("Impossible de trouver le destinataire");
-		}
-		else if (rec != null && send != null) {
-			msg = "Message privé de "+send.getId()+" : "+msg;
+		if (rec != null && send != null) {
+			msg = send.getSession().getLogin()+" vous à chuchoté : "+msg;
 			rec.getSession().setResponseMsg(msg);
 			rec.sendMessage(rec.getSession());
 		}

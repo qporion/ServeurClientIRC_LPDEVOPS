@@ -70,7 +70,7 @@ public class Session implements Serializable{
     /**
      * @param listeClients the listeClients to set
      */
-    public void setListeClients(HashMap<Integer, String> listeClients) {
+    public void setListeClients(Map<Integer, String> listeClients) {
         this.listeClients = listeClients;
     }
     

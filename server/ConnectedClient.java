@@ -108,7 +108,9 @@ public class ConnectedClient implements Runnable {
 
 	public void sendMessage(Session session) {
 		try {
-			System.out.println(session.getResponseMsg());
+			session.getListeClients().forEach((id, login) -> {
+				System.out.println("Login "+id+" : "+login);
+			});
 			this.out.writeObject(session);
 			this.out.flush();
 			this.out.reset();

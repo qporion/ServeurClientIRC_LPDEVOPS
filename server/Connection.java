@@ -23,6 +23,7 @@ public class Connection implements Runnable{
 		for(;;) {
 			Socket sClient = new Socket();
 			try {
+				System.out.println("En attente de connexion ...");
 				sClient = this.sSocket.accept();
 				ConnectedClient newClient = new ConnectedClient(this.server, sClient);
 				this.server.addClient(newClient);				

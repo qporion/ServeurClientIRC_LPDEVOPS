@@ -35,6 +35,7 @@ public class ClientReceive implements Runnable {
 			try {
 				Session session = (Session) in.readObject();
         
+				this.client.getSession().setPrivateId(-1);
 				this.client.getSession().setAddUser(false);
 				
 				if (session.isConnected() == 1 && !connected) {
@@ -51,6 +52,7 @@ public class ClientReceive implements Runnable {
 				}
 				else {
 					this.client.getSession().setResponseMsg(session.getResponseMsg());
+					this.client.getSession().setListeClients(session.getListeClients());
 				}
 				message = session.getLogin()+" >> "+this.client.getSession().getResponseMsg();
 			} catch (IOException | ClassNotFoundException e) {
