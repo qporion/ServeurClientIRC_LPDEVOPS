@@ -27,7 +27,8 @@ public class ClientReceive implements Runnable {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
+		boolean connected = false;
+		
 		while (isActive) {
 			String message = null;
 			
@@ -35,12 +36,13 @@ public class ClientReceive implements Runnable {
 				Session session = (Session) in.readObject();
         
 				this.client.getSession().setAddUser(false);
-				if (session.isConnected() == 1) {
+				
+				if (session.isConnected() == 1 && !connected) {
 					ClientPanel newPanel = new ClientPanel();
 					newPanel.client = this.client;
 					this.client.getClientPanel().changeScene(newPanel);
 					this.client.setClientPanel(newPanel);
-					
+					connected = true;
 				}
 				
 				if (this.client.getSession().isConnected() != 1) {

@@ -99,7 +99,7 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 			@Override
 			public void run() {
 				AuthPanel clientPanel = (AuthPanel) client.getClientPanel();
-				clientPanel.errorLabel.setText(msg);;
+				clientPanel.errorLabel.setText(msg);
 			}
 		});		
 	}

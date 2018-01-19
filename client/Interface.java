@@ -10,7 +10,7 @@ public class Interface extends Application {
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-		InscriptionPanel authPanel = new InscriptionPanel();
+		AuthPanel authPanel = new AuthPanel();
 		authPanel.client = this.client;
 		client.setClientPanel(authPanel);
 		Group root = new Group();

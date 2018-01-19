@@ -29,6 +29,7 @@ public class Client {
             send.start();
         } catch(IOException e)  {
             e.printStackTrace();
+            System.exit(0);
         }
         
         
