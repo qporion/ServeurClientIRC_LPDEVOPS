@@ -6,7 +6,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Session implements Serializable{
 
@@ -17,7 +19,7 @@ public class Session implements Serializable{
 	private int privateId = -1; 
 
    private boolean sendMessage = false, addUser = false;
-   private List<String> listeClients = new ArrayList<>();
+   private Map<Integer, String> listeClients = new HashMap<>();
 	    
 
 	public Session (String login, int isConnected) {
@@ -58,17 +60,17 @@ public class Session implements Serializable{
 	}
         
 
-         /**
+    /**
      * @return the listeClients
      */
-    public List<String> getListeClients() {
+    public Map<Integer, String> getListeClients() {
         return listeClients;
     }
 
     /**
      * @param listeClients the listeClients to set
      */
-    public void setListeClients(List<String> listeClients) {
+    public void setListeClients(HashMap<Integer, String> listeClients) {
         this.listeClients = listeClients;
     }
     

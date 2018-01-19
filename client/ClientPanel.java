@@ -130,6 +130,14 @@ class ClientPanel extends Parent implements ChangeablePanel {
 				newLabel.setPrefWidth(400);
 				ClientPanel clientPanel = (ClientPanel) client.getClientPanel();
 				clientPanel.receivedText.getChildren().add(newLabel);
+				
+				clientPanel.connected.setText("");
+				client.getSession().getListeClients().forEach((id, login) -> {
+					System.out.println("Login : "+login);
+					clientPanel.connected.setText(clientPanel.connected.getText()+login+"\n");
+				});
+				
+				
 			}
 		});
 

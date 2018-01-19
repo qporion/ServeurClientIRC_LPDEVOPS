@@ -29,6 +29,7 @@ public class ClientSend implements Runnable {
 					if (this.client.getSession().isConnected() == 0) {
 						this.client.getSession().setMessage(
 								this.client.getSession().encryptedMessage());
+						
 						out.writeObject(this.client.getSession());
 						out.flush();
 						this.client.getSession().setConnected(-2);
@@ -39,10 +40,10 @@ public class ClientSend implements Runnable {
 					this.client.getSession().setSendMessage(false);
 				}
 			}
+			
 			while (true) {
 				Thread.yield();
 				if (this.client.getSession().isSendMessage()) {
-	  				System.out.println(this.client.getSession().getMessage());
 						out.writeObject(this.client.getSession());
 						out.flush();
 						out.reset();

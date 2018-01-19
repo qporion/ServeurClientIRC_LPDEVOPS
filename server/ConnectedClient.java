@@ -17,14 +17,15 @@ public class ConnectedClient implements Runnable {
 	public static int counterId = 0;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private Session session; 
-	
-	public ConnectedClient (Server server, Socket sock) {
+	private Session session;
+
+	public ConnectedClient(Server server, Socket sock) {
 		this.id = ConnectedClient.counterId++;
 		this.server = server;
 		this.sock = sock;
-        
-        System.out.println("Nouvelle connexion, id = "+this.id+", ip = "+this.sock.getInetAddress().toString());
+
+		System.out.println("Nouvelle connexion, id = " + this.id + ", ip = "
+				+ this.sock.getInetAddress().toString());
 	}
 
 	@Override
@@ -54,11 +55,16 @@ public class ConnectedClient implements Runnable {
 				String message = this.session.getMessage();
 
 				System.out.println("Message recu de "+this.session.getLogin()+" : "+message);
-        this.server.getAuthClients().forEach(client->session.getListeClients().add(client.getSession().getLogin()));
+				
+				session.getListeClients().clear();
+				this.server.getAuthClients().forEach(client -> session.getListeClients().put(client.getId(), client.getSession().getLogin()));
+				
 				if (this.session.isAddUser()) {
 					 if(db.newLogin(this.session.getLogin(), this.session.getMessage())) {
 					session.setConnected(1);
 					session.setResponseMsg("Bienvenue");
+					session.getListeClients().put(this.getId(), this.session.getLogin());
+					
 					this.sendMessage(session);
 					
 					this.server.getClients().remove(this);
@@ -66,7 +72,7 @@ public class ConnectedClient implements Runnable {
 					 }
 					 else {
 						 session.setConnected(-1);
-						 session.setResponseMsg("Login dï¿½jï¿½ utilisï¿½");
+						 session.setResponseMsg("Login déjà utilisé");
 						this.sendMessage(session);
 					 }
 				}
@@ -80,6 +86,8 @@ public class ConnectedClient implements Runnable {
 						if(db.login(this.session.getLogin(), this.session.getMessage())) {
 							session.setConnected(1);
 							session.setResponseMsg("Vous etes auth");
+							session.getListeClients().put(this.getId(), this.session.getLogin());
+							
 							this.sendMessage(session);
 							
 							this.server.getClients().remove(this);
@@ -87,6 +95,8 @@ public class ConnectedClient implements Runnable {
 						}
 						else {
 							session.setConnected(-1);
+							session.setResponseMsg("Erreur de login/mdp");
+							this.sendMessage(session);
 						}
 					}
 				}				
@@ -95,9 +105,8 @@ public class ConnectedClient implements Runnable {
 			}
 		}
 	}
-	
 
-	public void sendMessage (Session session) {
+	public void sendMessage(Session session) {
 		try {
 			System.out.println(session.getResponseMsg());
 			this.out.writeObject(session);
@@ -107,17 +116,17 @@ public class ConnectedClient implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	public void closeClient () throws IOException {
+
+	public void closeClient() throws IOException {
 		this.in.close();
 		this.out.close();
 		this.sock.close();
 	}
-	
+
 	public int getId() {
 		return this.id;
 	}
-	
+
 	public Session getSession() {
 		return session;
 	}
@@ -125,5 +134,5 @@ public class ConnectedClient implements Runnable {
 	public void setSession(Session session) {
 		this.session = session;
 	}
-	
+
 }
