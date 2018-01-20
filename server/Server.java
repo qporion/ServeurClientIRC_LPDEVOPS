@@ -10,6 +10,7 @@ public class Server {
 	private List<ConnectedClient> clients = new ArrayList<>();
 	private List<ConnectedClient> authClients = new ArrayList<>();
 	private Session session;
+	private ConnectedClient send = null, rec = null;
 	
 	public Server (int port) throws IOException {
 		this.port = port;
@@ -45,7 +46,8 @@ public class Server {
 	}
 	
 	public void privateMessage (String msg, int idSend, int idRec) {
-		ConnectedClient send = null, rec = null;
+		send = null;
+		rec = null;
 		
 		for(ConnectedClient client : this.authClients)  {
 			if(client.getId() == idSend) {
@@ -55,6 +57,9 @@ public class Server {
 				rec = client;
 			}
 		}
+		
+		rec.getSession().getListeClients().clear();
+		authClients.forEach(client -> rec.getSession().getListeClients().put(client.getId(), client.getSession().getLogin()));
 		
 		if (rec != null && send != null) {
 			msg = send.getSession().getLogin()+" vous à chuchoté : "+msg;

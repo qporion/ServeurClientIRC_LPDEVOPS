@@ -12,12 +12,12 @@ public class Interface extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		AuthPanel authPanel = new AuthPanel(this.client.socket);
+		AuthPanel authPanel = new AuthPanel();
 		authPanel.client = this.client;
 		client.setClientPanel(authPanel);
 		Group root = new Group();
 		root.getChildren().add(authPanel);
-		Scene scene = new Scene(root, 260, 160);
+		Scene scene = new Scene(root, AuthPanel.X, AuthPanel.Y);
 		stage.setTitle("Mon ch@t");
 		stage.setScene(scene);
 		stage.show();

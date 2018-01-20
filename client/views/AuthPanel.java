@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import client.Client;
+import client.views.components.ButtonPerso;
+import client.views.components.ErrorLabel;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,10 +25,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class AuthPanel extends Parent implements ChangeablePanel {
 
+	public final static int X = 250;
+	public final static int Y = 220;
+	
 	public Client client;
 
 	private TextField userTextField;
@@ -36,7 +42,7 @@ public class AuthPanel extends Parent implements ChangeablePanel {
 	private Button sendBtn;
 	private Label errorLabel;
 
-	public AuthPanel(Socket sock) {
+	public AuthPanel() {
 		
 		// ////////////////user:
 		this.userName = new Label("Pseudo :");
@@ -71,7 +77,7 @@ public class AuthPanel extends Parent implements ChangeablePanel {
 
 		// ////valider:
 
-		this.sendBtn = new Button();
+		this.sendBtn = new ButtonPerso();
 		sendBtn.setLayoutX(70);
 		sendBtn.setLayoutY(120);
 		sendBtn.setPrefHeight(10);
@@ -101,17 +107,38 @@ public class AuthPanel extends Parent implements ChangeablePanel {
 				}
 			}
 		});
+			
 		this.getChildren().add(sendBtn);
 		
-		errorLabel = new Label();
+		this.errorLabel = new ErrorLabel();
+		errorLabel.setLayoutX(60);
+		errorLabel.setLayoutY(150);
+		errorLabel.setPrefHeight(10);
+		errorLabel.setPrefWidth(140);
+		this.getChildren().add(errorLabel);
+		
+		ButtonPerso btn = new ButtonPerso("Inscription");
+		btn.setLayoutX(70);
+		btn.setLayoutY(180);
+		btn.setPrefHeight(10);
+		btn.setPrefWidth(100);
+		btn.setOnAction((ActionEvent e) -> {
+			InscriptionPanel ins = new InscriptionPanel();
+			ins.client = client;
+			changeScene(ins, InscriptionPanel.X, InscriptionPanel.Y);
+		});
+		this.getChildren().add(btn);
 
 	}
 
-	public void changeScene(final Parent panel, int x, int y) {
+	public void changeScene(final ChangeablePanel panel, int x, int y) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Scene scene = new Scene(panel, x, y); //260 160
+				client.setClientPanel(panel);
+				
+				Parent parent = (Parent) panel;
+				Scene scene = new Scene(parent, x, y); //260 160
 				Stage appStage = (Stage) getScene().getWindow();
 				appStage.setScene(scene);
 				appStage.show();

@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import client.Client;
+import client.views.components.ButtonPerso;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -34,6 +35,9 @@ import javafx.stage.Stage;
 
 public class ClientPanel extends Parent implements ChangeablePanel {
 
+	public final static int X = 600;
+	public final static int Y = 500;
+	
 	TabPane tabPanel;
 
 	public Client client;
@@ -67,23 +71,9 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 				VBox connected = (VBox) tabPanel.lookup("#connected_" + privateId);
 				connected.getChildren().clear();
 				client.getSession().getListeClients().forEach((id, login) -> {
-					Button btn = new Button(login);
+					ButtonPerso btn = new ButtonPerso(login);
 					btn.setPrefHeight(20);
 					btn.setPrefWidth(100);
-					btn.setStyle("-fx-background-color:#FFF;" + "-fx-border-color: #4286f4;" + "-fx-border-radius: 2px;"
-							+ "-fx-border-width: 1;" + "-fx-border-style: solid;");
-
-					btn.setOnMouseEntered((MouseEvent e) -> {
-						btn.getStyleClass().removeAll();
-						btn.setStyle("-fx-background-color:#DDD;" + "-fx-border-color: #4286f4;"
-								+ "-fx-border-radius: 2px;" + "-fx-border-width: 1;" + "-fx-border-style: solid;");
-					});
-
-					btn.setOnMouseExited((MouseEvent e) -> {
-						btn.getStyleClass().removeAll();
-						btn.setStyle("-fx-background-color:#FFF;" + "-fx-border-color: #4286f4;"
-								+ "-fx-border-radius: 2px;" + "-fx-border-width: 1;" + "-fx-border-style: solid;");
-					});
 
 					TextArea textToSend = (TextArea) tabPanel.lookup("#textToSend_" + privateId);
 					btn.setOnMouseClicked((MouseEvent e) -> {
@@ -100,11 +90,14 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 	}
 
 	@Override
-	public void changeScene(final Parent panel, int x, int y) {
+	public void changeScene(final ChangeablePanel panel, int x, int y) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Scene scene = new Scene(panel, x, y); // 600, 500
+				client.setClientPanel(panel);
+				
+				Parent parent = (Parent) panel;
+				Scene scene = new Scene(parent, x, y); // 600, 500
 				Stage appStage = (Stage) getScene().getWindow();
 				appStage.setScene(scene);
 				appStage.show();
@@ -207,9 +200,9 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		ScrollPane scrollReceivedText = new ScrollPane();
 		TextFlow receivedText = new TextFlow();
 		// bouton permettant d'envoyer du texte
-		Button sendBtn = new Button();
+		Button sendBtn = new ButtonPerso();
 		// bouton permettant d'effacer la zone de saisie
-		Button clearBtn = new Button();
+		Button clearBtn = new ButtonPerso();
 		// zone de texte recevant les noms des utilisateurs connectés
 		VBox connected = new VBox();
 		// Label connectés:

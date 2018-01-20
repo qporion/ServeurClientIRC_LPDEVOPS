@@ -100,20 +100,33 @@ public class ConnectedClient implements Runnable {
 						else
 							this.server.broadcastMessage(message, this.session);
 					} else {
-						if (db.login(this.session.getLogin(), this.session.getMessage())) {
-							session.setConnected(1);
-							session.setResponseMsg("Vous etes auth");
-							session.getListeClients().put(this.getId(), this.session.getLogin());
-
-							this.sendMessage(session);
-
-							this.server.getClients().remove(this);
-							this.server.getAuthClients().add(this);
-							this.server.notifyNewAuth(this);
-						} else {
+						boolean alreadyAuth = false;
+						
+						for (ConnectedClient client : server.getAuthClients()) {
+							if (client.getSession().getLogin().equals(session.getLogin()))
+								alreadyAuth = true;
+						}
+						
+						if (alreadyAuth) {
 							session.setConnected(-1);
-							session.setResponseMsg("Erreur de login/mdp");
+							session.setResponseMsg("Vous déjà authentifié");
 							this.sendMessage(session);
+						} else {
+							if (db.login(this.session.getLogin(), this.session.getMessage())) {
+								session.setConnected(1);
+								session.setResponseMsg("Vous etes auth");
+								session.getListeClients().put(this.getId(), this.session.getLogin());
+
+								this.sendMessage(session);
+
+								this.server.getClients().remove(this);
+								this.server.getAuthClients().add(this);
+								this.server.notifyNewAuth(this);
+							} else {
+								session.setConnected(-1);
+								session.setResponseMsg("Erreur de login/mdp");
+								this.sendMessage(session);
+							}
 						}
 					}
 				}

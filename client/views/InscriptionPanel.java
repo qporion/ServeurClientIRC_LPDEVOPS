@@ -3,6 +3,8 @@ package client.views;
 import java.io.IOException;
 
 import client.Client;
+import client.views.components.ButtonPerso;
+import client.views.components.ErrorLabel;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class InscriptionPanel extends Parent implements ChangeablePanel {
+	public final static int X = 250;
+	public final static int Y = 310;
+	
 	TextField userTextField;
 	PasswordField pwBox, pwBoxConfirm;
 	Label userName;
@@ -27,7 +32,7 @@ public class InscriptionPanel extends Parent implements ChangeablePanel {
 
 	public InscriptionPanel() {
 
-		this.errorLabel = new Label("");
+		this.errorLabel = new ErrorLabel();
 		errorLabel.setLayoutX(70);
 		errorLabel.setLayoutY(0);
 		errorLabel.setPrefHeight(10);
@@ -82,7 +87,7 @@ public class InscriptionPanel extends Parent implements ChangeablePanel {
 
 		// ////valider:
 
-		this.sendBtn = new Button();
+		this.sendBtn = new ButtonPerso();
 		sendBtn.setLayoutX(70);
 		sendBtn.setLayoutY(160);
 		sendBtn.setPrefHeight(10);
@@ -119,13 +124,28 @@ public class InscriptionPanel extends Parent implements ChangeablePanel {
 		});
 		this.getChildren().add(sendBtn);
 
+		ButtonPerso btn = new ButtonPerso("Connection");
+		btn.setLayoutX(70);
+		btn.setLayoutY(220);
+		btn.setPrefHeight(10);
+		btn.setPrefWidth(100);
+		btn.setOnAction((ActionEvent e) -> {
+			AuthPanel auth = new AuthPanel();
+			auth.client = client;
+			changeScene(auth, AuthPanel.X, AuthPanel.Y);
+		});
+		this.getChildren().add(btn);
+		
 	}
 
-	public void changeScene(final Parent panel, int x, int y) {
+	public void changeScene(final ChangeablePanel panel, int x, int y) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Scene scene = new Scene(panel, x, y); // 250, 250
+				client.setClientPanel(panel);
+				
+				Parent parent = (Parent) panel;
+				Scene scene = new Scene(parent, x, y); // 250, 250
 				Stage appStage = (Stage) getScene().getWindow();
 				appStage.setScene(scene);
 				appStage.show();

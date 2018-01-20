@@ -45,21 +45,25 @@ public class ClientReceive implements Runnable {
 				if (session.isConnected() == 1 && !connected) {
 					ClientPanel newPanel = new ClientPanel();
 					newPanel.client = this.client;
-					this.client.getClientPanel().changeScene(newPanel, 600, 500);
+					this.client.getClientPanel().changeScene(newPanel, ClientPanel.X, ClientPanel.Y);
 					this.client.setClientPanel(newPanel);
 					connected = true;
 				}
 
+				message = "";
+				this.client.getSession().getListeClients().clear();
+				this.client.getSession().setListeClients(session.getListeClients());
+
 				if (this.client.getSession().isConnected() != 1) {
 					this.client.setSession(session);
 					this.client.getSession().setSendMessage(false);
+					message = this.client.getSession().getResponseMsg();
 				} else {
+					message = session.getLogin() + " >> " + this.client.getSession().getResponseMsg();
 					this.client.getSession().setResponseMsg(session.getResponseMsg());
-					this.client.getSession().getListeClients().clear();
-					this.client.getSession().setListeClients(session.getListeClients());
 				}
 
-				message = session.getLogin() + " >> " + this.client.getSession().getResponseMsg();
+				 
 
 				if (this.client.getSession() != null) {
 					if (session.getPrivateId() == -1) {
