@@ -33,6 +33,7 @@ public class ClientReceive implements Runnable {
 		boolean connected = false;
 
 		while (isActive) {
+			Thread.yield();
 			String message = null;
 			isActive = !this.sock.isClosed();
 
@@ -59,7 +60,7 @@ public class ClientReceive implements Runnable {
 					this.client.getSession().setSendMessage(false);
 					message = this.client.getSession().getResponseMsg();
 				} else {
-					message = session.getLogin() + " >> " + this.client.getSession().getResponseMsg();
+					message = session.getLogin() + " >> " + session.getResponseMsg();
 					this.client.getSession().setResponseMsg(session.getResponseMsg());
 				}
 
@@ -73,7 +74,6 @@ public class ClientReceive implements Runnable {
 						if (this.client.getClientPanel() instanceof ClientPanel) {
 							ClientPanel client = (ClientPanel) this.client.getClientPanel();
 							Tab tab = client.getTab(session.getPrivateId(), true);
-							System.out.println("TAB : "+tab.getText());
 							client.updateTextArea(message, session.getPrivateId());
 						}
 					}

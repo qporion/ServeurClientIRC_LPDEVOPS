@@ -25,7 +25,7 @@ public class Server {
 	}
 	
 	public void notifyNewAuth(ConnectedClient client) {
-		String msg = client.getSession().getLogin()+" à rejoint le salon !";
+		String msg = "[a]"+client.getSession().getLogin()+"[/a] à rejoint le salon !";
 		this.session.setLogin("Serveur");
 		this.broadcastMessage(msg, this.session);
 	}
@@ -58,9 +58,10 @@ public class Server {
 			}
 		}
 		
-		rec.getSession().getListeClients().clear();
-		authClients.forEach(client -> rec.getSession().getListeClients().put(client.getId(), client.getSession().getLogin()));
-		
+		if (rec != null) {
+			rec.getSession().getListeClients().clear();
+			authClients.forEach(client -> rec.getSession().getListeClients().put(client.getId(), client.getSession().getLogin()));
+		}
 		if (rec != null && send != null) {
 			msg = send.getSession().getLogin()+" vous à chuchoté : "+msg;
 			rec.getSession().setResponseMsg(msg);

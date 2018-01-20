@@ -42,7 +42,7 @@ public class ConnectedClient implements Runnable {
 		}
 
 		while (this.sock.isConnected()) {
-
+			Thread.yield();
 			try {
 
 				Session ses = (Session) in.readObject();

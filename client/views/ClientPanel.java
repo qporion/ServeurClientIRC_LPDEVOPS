@@ -2,11 +2,14 @@ package client.views;
 
 import javafx.scene.input.MouseEvent;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.URI;
 import java.util.List;
 
 import client.Client;
+import client.views.components.ButtonLogin;
 import client.views.components.ButtonPerso;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -37,7 +40,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 
 	public final static int X = 600;
 	public final static int Y = 500;
-	
+
 	TabPane tabPanel;
 
 	public Client client;
@@ -58,15 +61,66 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 	}
 
 	public void updateTextArea(final String msg, int privateId) {
+		ClientPanel thisPanel = this;
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				Label newLabel = new Label();
-				newLabel.setText(msg);
-				newLabel.setPrefWidth(400);
+				Button btnLabel = null;
+				
+				TextFlow receivedText = (TextFlow) tabPanel.lookup("#receivedText_" + privateId);				
+				
+				if (msg.contains("<a>") && msg.contains("</a>")) {
+					Label newLabel2 = new Label();
+					
+					int idxStart = msg.indexOf("<a>");
+					int idxEnd = msg.substring(idxStart).indexOf("</a>");
 
-				TextFlow receivedText = (TextFlow) tabPanel.lookup("#receivedText_" + privateId);
-				receivedText.getChildren().add(newLabel);
+					newLabel.setText(msg.substring(0, idxStart));
+					newLabel2.setText(msg.substring(idxStart + idxEnd+4));
+					newLabel2.setPrefWidth(200);
+					String url = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+					btnLabel = new ButtonLogin(url);
+					btnLabel.setOnAction((ActionEvent e) -> {
+						URI uri = URI.create(url);
+						try {
+							Desktop.getDesktop().browse(uri);
+						} catch (IOException ex) {
+							ex.printStackTrace();
+						}
+					});
+					
+					receivedText.getChildren().add(newLabel);
+					receivedText.getChildren().add(btnLabel);
+					receivedText.getChildren().add(newLabel2);
+					
+					
+				}
+				else if (msg.contains("[a]") && msg.contains("[/a]")) {
+					Label newLabel2 = new Label();
+					
+					int idxStart = msg.indexOf("[a]");
+					int idxEnd = msg.substring(idxStart).indexOf("[/a]");
+
+					newLabel.setText(msg.substring(0, idxStart));
+					newLabel2.setText(msg.substring(idxStart + idxEnd+4));
+					newLabel2.setPrefWidth(250);
+					String login = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+					btnLabel = new ButtonLogin(login, client, thisPanel);
+					
+					receivedText.getChildren().add(newLabel);
+					receivedText.getChildren().add(btnLabel);
+					receivedText.getChildren().add(newLabel2);
+				}
+				else {
+					newLabel.setText(msg);
+					newLabel.setPrefWidth(400);
+					receivedText.getChildren().add(newLabel);
+				}
+				
 
 				VBox connected = (VBox) tabPanel.lookup("#connected_" + privateId);
 				connected.getChildren().clear();
@@ -95,7 +149,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 			@Override
 			public void run() {
 				client.setClientPanel(panel);
-				
+
 				Parent parent = (Parent) panel;
 				Scene scene = new Scene(parent, x, y); // 600, 500
 				Stage appStage = (Stage) getScene().getWindow();
@@ -182,7 +236,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 				tabPanel.getSelectionModel().select(newTab);
 			});
 			try {
-				//Obligatoire pour attendre le runlater au dessus
+				// Obligatoire pour attendre le runlater au dessus
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -208,6 +262,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		// Label connect√©s:
 		Text textMembers = new Text();
 
+		ClientPanel thisPanel = this;
 		Tab mainTab = new Tab();
 		mainTab.setText(login);
 		Pane box = new Pane();
@@ -251,24 +306,76 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 					client.getSession().setLogin(textToSend.getText());
 					textToSend.setText("");
 				} else {
+					String msg = textToSend.getText();
+					Button btnLabel = null;
 					Label newLabel = new Label();
-					newLabel.setText(textToSend.getText());
-					newLabel.setPrefWidth(400);
-					receivedText.getChildren().add(newLabel);
-					client.getSession().setMessage(textToSend.getText());
+					
+					if (msg.contains("<a>") && msg.contains("</a>")) {
+						Label newLabel2 = new Label();
+						
+						int idxStart = msg.indexOf("<a>");
+						int idxEnd = msg.substring(idxStart).indexOf("</a>");
+
+						newLabel.setText(msg.substring(0, idxStart));
+						newLabel2.setText(msg.substring(idxStart + idxEnd+4));
+						newLabel2.setPrefWidth(200);
+						String url = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+						btnLabel = new ButtonLogin(url);
+						btnLabel.setOnAction((ActionEvent e) -> {
+							URI uri = URI.create(url);
+							try {
+								Desktop.getDesktop().browse(uri);
+							} catch (IOException ex) {
+								ex.printStackTrace();
+							}
+						});
+						
+						receivedText.getChildren().add(newLabel);
+						receivedText.getChildren().add(btnLabel);
+						receivedText.getChildren().add(newLabel2);
+						
+						
+					}
+					else if (msg.contains("[a]") && msg.contains("[/a]")) {
+						Label newLabel2 = new Label();
+						
+						int idxStart = msg.indexOf("[a]");
+						int idxEnd = msg.substring(idxStart).indexOf("[/a]");
+
+						newLabel.setText(msg.substring(0, idxStart));
+						newLabel2.setText(msg.substring(idxStart + idxEnd+4));
+						newLabel2.setPrefWidth(250);
+						String login = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+						btnLabel = new ButtonLogin(login, client, thisPanel);
+						
+						receivedText.getChildren().add(newLabel);
+						receivedText.getChildren().add(btnLabel);
+						receivedText.getChildren().add(newLabel2);
+					}
+					else {
+						newLabel.setText(msg);
+						newLabel.setPrefWidth(400);
+						receivedText.getChildren().add(newLabel);
+					}
+					
+					client.getSession().setMessage(msg);
 					client.getSession().setPrivateId(id);
 					sendMessage();
 					textToSend.setText("");
-					
+
 					if (client.getSession().getMessage().startsWith("/chuchoter ‡ ")) {
-						String loginPriv = client.getSession().getListeClients().get(new Integer(client.getSession().getPrivateId()));
+						String loginPriv = client.getSession().getListeClients()
+								.get(new Integer(client.getSession().getPrivateId()));
 						Tab newTab = createTab(loginPriv, client.getSession().getPrivateId());
 						Platform.runLater(() -> {
 							tabPanel.getTabs().add(newTab);
 							tabPanel.getSelectionModel().select(newTab);
 						});
-						
-						TextFlow receivedText = (TextFlow) tabPanel.lookup("#receivedText_"+client.getSession().getPrivateId());
+
+						TextFlow receivedText = (TextFlow) tabPanel
+								.lookup("#receivedText_" + client.getSession().getPrivateId());
 						receivedText.getChildren().add(newLabel);
 					}
 				}
