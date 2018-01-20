@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 
+import server.db.UsersRepository;
+
 public class MainServer {
 
 	public static void main(String[] args) throws IOException {

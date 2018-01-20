@@ -20,14 +20,20 @@ public class Server {
 	}
 	
 	public void addClient (ConnectedClient client) {
-		/*String msg = "Le client "+client.getSession().getLogin()+" vient de se connecter !";
-		this.broadcastMessage(msg, -1);*/
 		this.clients.add(client);
+	}
+	
+	public void notifyNewAuth(ConnectedClient client) {
+		String msg = client.getSession().getLogin()+" à rejoint le salon !";
+		this.session.setLogin("Serveur");
+		this.broadcastMessage(msg, this.session);
 	}
 	
 	public void broadcastMessage (String message, Session session) {
 		this.session.setLogin(session.getLogin());
+		this.session.setPrivateId(-1);
 		
+		this.session.getListeClients().clear();
 		authClients.forEach(client -> this.session.getListeClients().put(client.getId(), client.getSession().getLogin()));
 		
 		for(ConnectedClient client : this.authClients)  {
@@ -53,14 +59,16 @@ public class Server {
 		if (rec != null && send != null) {
 			msg = send.getSession().getLogin()+" vous à chuchoté : "+msg;
 			rec.getSession().setResponseMsg(msg);
+			rec.getSession().setPrivateId(idSend);
 			rec.sendMessage(rec.getSession());
 		}
 	}
 	
 	public void disconnectedClient (ConnectedClient client) {
 		this.authClients.remove(client);
-		/*String msg = "Le client "+client.getId()+" vient de se déconnecter !";
-		this.broadcastMessage(msg, this.session);*/
+		String msg = client.getSession().getLogin()+" à quitté le salon !";
+		this.session.setLogin("Serveur");
+		this.broadcastMessage(msg, this.session);
 	}
 	
 	public int getPort () {

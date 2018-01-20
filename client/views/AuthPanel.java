@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package client;
+package client.views;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import client.Client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,19 +20,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class AuthPanel extends Parent implements ChangeablePanel{
-	TextField userTextField;
-	PasswordField pwBox;
-	Label userName;
-	Label password;
-	Button sendBtn;
-	Client client;
-	Label errorLabel;
+public class AuthPanel extends Parent implements ChangeablePanel {
 
-	public AuthPanel() {
+	public Client client;
+
+	private TextField userTextField;
+	private PasswordField pwBox;
+	private Label userName;
+	private Label password;
+	private Button sendBtn;
+	private Label errorLabel;
+
+	public AuthPanel(Socket sock) {
+		
 		// ////////////////user:
 		this.userName = new Label("Pseudo :");
 		userName.setLayoutX(70);
@@ -66,26 +76,42 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 		sendBtn.setLayoutY(120);
 		sendBtn.setPrefHeight(10);
 		sendBtn.setPrefWidth(100);
-		sendBtn.setText("Valider");		
-		 sendBtn.setOnAction( new EventHandler<ActionEvent>(){
-	            @Override
-	            public void handle (ActionEvent event){
-	                  client.getSession().setLogin(userTextField.getText());
-	                  client.getSession().setMessage(pwBox.getText());
-	                  pwBox.setText("");
-	                  
-	                  client.getSession().setSendMessage(true);
-	            }
-	        });
-		 this.getChildren().add(sendBtn);
+		sendBtn.setText("Valider");
+		sendBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				client.getSession().setLogin(userTextField.getText());
+				client.getSession().setMessage(pwBox.getText());
+				pwBox.setText("");
+
+				if (client.getSession().isConnected() == 0) {
+					client.getSession().setMessage(client.getSession().encryptedMessage());
+
+					try {
+						client.out.writeObject(client.getSession());
+						client.out.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					client.getSession().setConnected(-2);
+				} else if (client.getSession().isConnected() == -1) {
+					updateTextArea("Mauvais mot de passe / login");
+					client.getSession().setConnected(0);
+				}
+			}
+		});
+		this.getChildren().add(sendBtn);
+		
+		errorLabel = new Label();
 
 	}
 
-	public void changeScene(final Parent panel) {
+	public void changeScene(final Parent panel, int x, int y) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				Scene scene = new Scene(panel, 260, 160);
+				Scene scene = new Scene(panel, x, y); //260 160
 				Stage appStage = (Stage) getScene().getWindow();
 				appStage.setScene(scene);
 				appStage.show();
@@ -101,6 +127,6 @@ public class AuthPanel extends Parent implements ChangeablePanel{
 				AuthPanel clientPanel = (AuthPanel) client.getClientPanel();
 				clientPanel.errorLabel.setText(msg);
 			}
-		});		
+		});
 	}
 }

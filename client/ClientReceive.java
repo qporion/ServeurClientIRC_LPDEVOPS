@@ -7,7 +7,9 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import auth.Session;
+import client.views.ClientPanel;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 
 public class ClientReceive implements Runnable {
 	public Client client;
@@ -25,48 +27,62 @@ public class ClientReceive implements Runnable {
 		try {
 			this.in = new ObjectInputStream(this.sock.getInputStream());
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			Thread.currentThread().interrupt();
+			return;
 		}
 		boolean connected = false;
-		
+
 		while (isActive) {
 			String message = null;
-			
+			isActive = !this.sock.isClosed();
+
 			try {
 				Session session = (Session) in.readObject();
-        
+
 				this.client.getSession().setPrivateId(-1);
 				this.client.getSession().setAddUser(false);
-				
+
 				if (session.isConnected() == 1 && !connected) {
 					ClientPanel newPanel = new ClientPanel();
 					newPanel.client = this.client;
-					this.client.getClientPanel().changeScene(newPanel);
+					this.client.getClientPanel().changeScene(newPanel, 600, 500);
 					this.client.setClientPanel(newPanel);
 					connected = true;
 				}
-				
+
 				if (this.client.getSession().isConnected() != 1) {
-						this.client.setSession(session);
-					    this.client.getSession().setSendMessage(false);
-				}
-				else {
+					this.client.setSession(session);
+					this.client.getSession().setSendMessage(false);
+				} else {
 					this.client.getSession().setResponseMsg(session.getResponseMsg());
+					this.client.getSession().getListeClients().clear();
 					this.client.getSession().setListeClients(session.getListeClients());
 				}
-				message = session.getLogin()+" >> "+this.client.getSession().getResponseMsg();
+
+				message = session.getLogin() + " >> " + this.client.getSession().getResponseMsg();
+
+				if (this.client.getSession() != null) {
+					if (session.getPrivateId() == -1) {
+						this.client.getClientPanel().updateTextArea(message);
+					} else {
+
+						if (this.client.getClientPanel() instanceof ClientPanel) {
+							ClientPanel client = (ClientPanel) this.client.getClientPanel();
+							Tab tab = client.getTab(session.getPrivateId(), true);
+							System.out.println("TAB : "+tab.getText());
+							client.updateTextArea(message, session.getPrivateId());
+						}
+					}
+				} else {
+					isActive = false;
+				}
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
+				return;
 
-			}
-
-			if (this.client.getSession() != null) {
-					this.client.getClientPanel().updateTextArea(message);
-			} else {
-				isActive = false;
 			}
 		}
-                
+
 		client.disconnectedServer();
 	}
 
