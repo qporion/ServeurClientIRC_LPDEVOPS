@@ -1,0 +1,762 @@
+[
+  {
+    "pays": "Afghanistan ",
+    "capitale": "Kaboul"
+  },
+  {
+    "pays": "Afrique du Sud ",
+    "capitale": "Pr%uFFFDtoria"
+  },
+  {
+    "pays": "Albanie ",
+    "capitale": "Tirana"
+  },
+  {
+    "pays": "Alg%uFFFDrie ",
+    "capitale": "Alger"
+  },
+  {
+    "pays": "Allemagne ",
+    "capitale": "Berlin"
+  },
+  {
+    "pays": "Andorre ",
+    "capitale": "Andorre-la-Vieille"
+  },
+  {
+    "pays": "Angola ",
+    "capitale": "Luanda"
+  },
+  {
+    "pays": "Antigua-et-Barbuda",
+    "capitale": "Saint John's"
+  },
+  {
+    "pays": "Arabie saoudite ",
+    "capitale": "Riyad"
+  },
+  {
+    "pays": "Argentine ",
+    "capitale": "Buenos Aires"
+  },
+  {
+    "pays": "Arm%uFFFDnie ",
+    "capitale": "Erevan"
+  },
+  {
+    "pays": "Australie ",
+    "capitale": "Canberra"
+  },
+  {
+    "pays": "Autriche ",
+    "capitale": "Vienne"
+  },
+  {
+    "pays": "Azerba%uFFFDdjan ",
+    "capitale": "Bakou"
+  },
+  {
+    "pays": "Bahamas ",
+    "capitale": "Nassau"
+  },
+  {
+    "pays": "Bahre%uFFFDn",
+    "capitale": "Manama"
+  },
+  {
+    "pays": "Bangladesh ",
+    "capitale": "Dacca"
+  },
+  {
+    "pays": "Barbade ",
+    "capitale": "Bridgetown"
+  },
+  {
+    "pays": "Belgique ",
+    "capitale": "Bruxelles"
+  },
+  {
+    "pays": "B%uFFFDlize ",
+    "capitale": "Belmopan"
+  },
+  {
+    "pays": "B%uFFFDnin ",
+    "capitale": "Porto-Novo"
+  },
+  {
+    "pays": "Bhoutan ",
+    "capitale": "Thimphou"
+  },
+  {
+    "pays": "Bi%uFFFDlorussie ",
+    "capitale": "Minsk"
+  },
+  {
+    "pays": "Birmanie ",
+    "capitale": "Naypyidaw"
+  },
+  {
+    "pays": "Bolivie ",
+    "capitale": "Sucre / La Paz"
+  },
+  {
+    "pays": "Bosnie-Herz%uFFFDgovine ",
+    "capitale": "Sarajevo"
+  },
+  {
+    "pays": "Botswana ",
+    "capitale": "Gaborone"
+  },
+  {
+    "pays": "Br%uFFFDsil ",
+    "capitale": "Brasilia"
+  },
+  {
+    "pays": "Brunei ",
+    "capitale": "Bandar Seri Begawan"
+  },
+  {
+    "pays": "Bulgarie ",
+    "capitale": "Sofia"
+  },
+  {
+    "pays": "Burkina ",
+    "capitale": "Ouagadougou"
+  },
+  {
+    "pays": "Burundi ",
+    "capitale": "Bujumbura"
+  },
+  {
+    "pays": "Cambodge ",
+    "capitale": "Phnom Penh"
+  },
+  {
+    "pays": "Cameroun ",
+    "capitale": "Yaound%uFFFD"
+  },
+  {
+    "pays": "Canada ",
+    "capitale": "Ottawa"
+  },
+  {
+    "pays": "Cap-Vert ",
+    "capitale": "Praia"
+  },
+  {
+    "pays": "Centrafrique ",
+    "capitale": "Bangui"
+  },
+  {
+    "pays": "Chili ",
+    "capitale": "Santiago"
+  },
+  {
+    "pays": "Chine ",
+    "capitale": "P%uFFFDkin"
+  },
+  {
+    "pays": "Chypre",
+    "capitale": "Nicosie"
+  },
+  {
+    "pays": "Colombie ",
+    "capitale": "Bogota"
+  },
+  {
+    "pays": "Comores ",
+    "capitale": "Moroni"
+  },
+  {
+    "pays": "Congo ",
+    "capitale": "Brazzaville"
+  },
+  {
+    "pays": "Cor%uFFFDe du Nord ",
+    "capitale": "Pyongyang"
+  },
+  {
+    "pays": "Cor%uFFFDe du Sud ",
+    "capitale": "S%uFFFDoul"
+  },
+  {
+    "pays": "Costa Rica ",
+    "capitale": "San Jos%uFFFD"
+  },
+  {
+    "pays": "C%uFFFDte d'Ivoire ",
+    "capitale": "Yamoussoukro"
+  },
+  {
+    "pays": "Croatie ",
+    "capitale": "Zagreb"
+  },
+  {
+    "pays": "Cuba",
+    "capitale": "La Havane"
+  },
+  {
+    "pays": "Danemark ",
+    "capitale": "Copenhague"
+  },
+  {
+    "pays": "Djibouti",
+    "capitale": "Djibouti"
+  },
+  {
+    "pays": "%uFFFDgypte ",
+    "capitale": "Le Caire"
+  },
+  {
+    "pays": "%uFFFDmirats arabes unis ",
+    "capitale": "Abou Dabi"
+  },
+  {
+    "pays": "%uFFFDquateur ",
+    "capitale": "Quito"
+  },
+  {
+    "pays": "%uFFFDrythr%uFFFDe ",
+    "capitale": "Asmara"
+  },
+  {
+    "pays": "Espagne ",
+    "capitale": "Madrid"
+  },
+  {
+    "pays": "Estonie ",
+    "capitale": "Tallinn"
+  },
+  {
+    "pays": "%uFFFDtats-Unis ",
+    "capitale": "Washington"
+  },
+  {
+    "pays": "%uFFFDthiopie ",
+    "capitale": "Addis Abeba"
+  },
+  {
+    "pays": "Fidji ",
+    "capitale": "Suva"
+  },
+  {
+    "pays": "Finlande ",
+    "capitale": "Helsinki"
+  },
+  {
+    "pays": "France ",
+    "capitale": "Paris"
+  },
+  {
+    "pays": "Gabon ",
+    "capitale": "Libreville"
+  },
+  {
+    "pays": "Gambie ",
+    "capitale": "Banjul"
+  },
+  {
+    "pays": "G%uFFFDorgie ",
+    "capitale": "Tbilissi"
+  },
+  {
+    "pays": "Ghana ",
+    "capitale": "Accra"
+  },
+  {
+    "pays": "Gr%uFFFDce ",
+    "capitale": "Ath%uFFFDnes"
+  },
+  {
+    "pays": "Grenade ",
+    "capitale": "Saint-Georges"
+  },
+  {
+    "pays": "Guat%uFFFDmala ",
+    "capitale": "Guat%uFFFDmala"
+  },
+  {
+    "pays": "Guin%uFFFDe ",
+    "capitale": "Conakry"
+  },
+  {
+    "pays": "Guin%uFFFDe-Bissao ",
+    "capitale": "Bissao"
+  },
+  {
+    "pays": "Guin%uFFFDe %uFFFDquatoriale ",
+    "capitale": "Malabo"
+  },
+  {
+    "pays": "Guyana ",
+    "capitale": "Georgetown"
+  },
+  {
+    "pays": "Ha%uFFFDti",
+    "capitale": "Port-au-Prince"
+  },
+  {
+    "pays": "Honduras ",
+    "capitale": "T%uFFFDgucigalpa"
+  },
+  {
+    "pays": "Hongrie ",
+    "capitale": "Budapest"
+  },
+  {
+    "pays": "Inde ",
+    "capitale": "New Delhi"
+  },
+  {
+    "pays": "Indon%uFFFDsie ",
+    "capitale": "Jakarta"
+  },
+  {
+    "pays": "Irak ",
+    "capitale": "Bagdad"
+  },
+  {
+    "pays": "Iran ",
+    "capitale": "T%uFFFDh%uFFFDran"
+  },
+  {
+    "pays": "Irlande ",
+    "capitale": "Dublin"
+  },
+  {
+    "pays": "Islande ",
+    "capitale": "Reykjavik"
+  },
+  {
+    "pays": "Italie ",
+    "capitale": "Rome"
+  },
+  {
+    "pays": "Jama%uFFFDque ",
+    "capitale": "Kingston"
+  },
+  {
+    "pays": "Japon ",
+    "capitale": "Tokyo"
+  },
+  {
+    "pays": "Jordanie ",
+    "capitale": "Amman"
+  },
+  {
+    "pays": "Kazakhstan ",
+    "capitale": "Astana"
+  },
+  {
+    "pays": "Kenya ",
+    "capitale": "Nairobi"
+  },
+  {
+    "pays": "Kirghizstan ",
+    "capitale": "Bichkek"
+  },
+  {
+    "pays": "Kiribati ",
+    "capitale": "Bairiki"
+  },
+  {
+    "pays": "Kosovo ",
+    "capitale": "Pristina"
+  },
+  {
+    "pays": "Kowe%uFFFDt ",
+    "capitale": "Kowe%uFFFDt"
+  },
+  {
+    "pays": "Laos ",
+    "capitale": "Vientiane"
+  },
+  {
+    "pays": "Lesotho ",
+    "capitale": "Maseru"
+  },
+  {
+    "pays": "Lettonie ",
+    "capitale": "Riga"
+  },
+  {
+    "pays": "Liban ",
+    "capitale": "Beyrouth"
+  },
+  {
+    "pays": "Lib%uFFFDria ",
+    "capitale": "Monrovia"
+  },
+  {
+    "pays": "Libye ",
+    "capitale": "Tripoli"
+  },
+  {
+    "pays": "Liechtenstein ",
+    "capitale": "Vaduz"
+  },
+  {
+    "pays": "Lituanie ",
+    "capitale": "Vilnius"
+  },
+  {
+    "pays": "Luxembourg ",
+    "capitale": "Luxembourg"
+  },
+  {
+    "pays": "R%uFFFDpublique yougoslave de)",
+    "capitale": "Skopje"
+  },
+  {
+    "pays": "Madagascar",
+    "capitale": "Antananarivo"
+  },
+  {
+    "pays": "Malaisie ",
+    "capitale": "Kuala Lumpur"
+  },
+  {
+    "pays": "Malawi ",
+    "capitale": "Lilongw%uFFFD"
+  },
+  {
+    "pays": "Maldives ",
+    "capitale": "Mal%uFFFD"
+  },
+  {
+    "pays": "Mali ",
+    "capitale": "Bamako"
+  },
+  {
+    "pays": "Malte",
+    "capitale": "La Valette"
+  },
+  {
+    "pays": "Maroc ",
+    "capitale": "Rabat"
+  },
+  {
+    "pays": "Marshall ",
+    "capitale": "Delap-Uliga-Darrit"
+  },
+  {
+    "pays": "Maurice",
+    "capitale": "Port-Louis"
+  },
+  {
+    "pays": "Mauritanie ",
+    "capitale": "Nouakchott"
+  },
+  {
+    "pays": "Mexique ",
+    "capitale": "Mexico"
+  },
+  {
+    "pays": "Micron%uFFFDsie ",
+    "capitale": "Palikir"
+  },
+  {
+    "pays": "Moldavie ",
+    "capitale": "Chisinau"
+  },
+  {
+    "pays": "Monaco",
+    "capitale": "Monaco"
+  },
+  {
+    "pays": "Mongolie ",
+    "capitale": "Oulan-Bator"
+  },
+  {
+    "pays": "Mont%uFFFDn%uFFFDgro ",
+    "capitale": "Podgorica"
+  },
+  {
+    "pays": "Mozambique ",
+    "capitale": "Maputo"
+  },
+  {
+    "pays": "Namibie ",
+    "capitale": "Windhoek"
+  },
+  {
+    "pays": "Nauru",
+    "capitale": "Yaren"
+  },
+  {
+    "pays": "N%uFFFDpal ",
+    "capitale": "Katmandou"
+  },
+  {
+    "pays": "Nicaragua ",
+    "capitale": "Managua"
+  },
+  {
+    "pays": "Niger ",
+    "capitale": "Niamey"
+  },
+  {
+    "pays": "Nig%uFFFDria ",
+    "capitale": "Abuja"
+  },
+  {
+    "pays": "Norv%uFFFDge ",
+    "capitale": "Oslo"
+  },
+  {
+    "pays": "Nouvelle-Z%uFFFDlande ",
+    "capitale": "Wellington"
+  },
+  {
+    "pays": "Oman",
+    "capitale": "Mascate"
+  },
+  {
+    "pays": "Ouganda ",
+    "capitale": "Kampala"
+  },
+  {
+    "pays": "Ouzb%uFFFDkistan ",
+    "capitale": "Tachkent"
+  },
+  {
+    "pays": "Pakistan ",
+    "capitale": "Islamabad"
+  },
+  {
+    "pays": "Palaos ",
+    "capitale": "Melekeok"
+  },
+  {
+    "pays": "Panama ",
+    "capitale": "Panama"
+  },
+  {
+    "pays": "Papouasie-Nouvelle-Guin%uFFFDe ",
+    "capitale": "Port Moresby"
+  },
+  {
+    "pays": "Paraguay ",
+    "capitale": "Assomption"
+  },
+  {
+    "pays": "Pays-Bas ",
+    "capitale": "Amsterdam"
+  },
+  {
+    "pays": "P%uFFFDrou ",
+    "capitale": "Lima"
+  },
+  {
+    "pays": "Philippines ",
+    "capitale": "Manille"
+  },
+  {
+    "pays": "Pologne ",
+    "capitale": "Varsovie"
+  },
+  {
+    "pays": "Portugal ",
+    "capitale": "Lisbonne"
+  },
+  {
+    "pays": "Qatar ",
+    "capitale": "Doha"
+  },
+  {
+    "pays": "Roumanie ",
+    "capitale": "Bucarest"
+  },
+  {
+    "pays": "Royaume-Uni ",
+    "capitale": "Londres"
+  },
+  {
+    "pays": "Russie ",
+    "capitale": "Moscou"
+  },
+  {
+    "pays": "Rwanda ",
+    "capitale": "Kigali"
+  },
+  {
+    "pays": "Saint-Christophe-et-Ni%uFFFDv%uFFFDs",
+    "capitale": "Basseterre"
+  },
+  {
+    "pays": "Sainte-Lucie",
+    "capitale": "Castries"
+  },
+  {
+    "pays": "Saint-Marin",
+    "capitale": "Saint-Marin"
+  },
+  {
+    "pays": "Grenadines",
+    "capitale": "Kingstown"
+  },
+  {
+    "pays": "Salomon ",
+    "capitale": "Honiara"
+  },
+  {
+    "pays": "Salvador ",
+    "capitale": "San Salvador"
+  },
+  {
+    "pays": "Samoa ",
+    "capitale": "Apia"
+  },
+  {
+    "pays": "Sao Tom%uFFFD-et-Principe",
+    "capitale": "Sao Tom%uFFFD"
+  },
+  {
+    "pays": "S%uFFFDn%uFFFDgal ",
+    "capitale": "Dakar"
+  },
+  {
+    "pays": "Serbie ",
+    "capitale": "Belgrade"
+  },
+  {
+    "pays": "Seychelles ",
+    "capitale": "Victoria"
+  },
+  {
+    "pays": "Sierra Leone ",
+    "capitale": "Freetown"
+  },
+  {
+    "pays": "Singapour",
+    "capitale": "Singapour"
+  },
+  {
+    "pays": "Slovaquie ",
+    "capitale": "Bratislava"
+  },
+  {
+    "pays": "Slov%uFFFDnie ",
+    "capitale": "Ljubljana"
+  },
+  {
+    "pays": "Somalie ",
+    "capitale": "Mogadiscio"
+  },
+  {
+    "pays": "Soudan ",
+    "capitale": "Khartoum"
+  },
+  {
+    "pays": "Soudan du Sud ",
+    "capitale": "Djouba ou Juba"
+  },
+  {
+    "pays": "Sri Lanka ",
+    "capitale": "Sri Jayewardenepura Kotte"
+  },
+  {
+    "pays": "Su%uFFFDde ",
+    "capitale": "Stockholm"
+  },
+  {
+    "pays": "Suisse ",
+    "capitale": "Berne"
+  },
+  {
+    "pays": "Suriname ",
+    "capitale": "Paramaribo"
+  },
+  {
+    "pays": "Swaziland ",
+    "capitale": "Mbaban%uFFFD"
+  },
+  {
+    "pays": "Syrie ",
+    "capitale": "Damas"
+  },
+  {
+    "pays": "Tadjikistan ",
+    "capitale": "Douchanb%uFFFD"
+  },
+  {
+    "pays": "Tanzanie ",
+    "capitale": "Dodoma"
+  },
+  {
+    "pays": "Tchad ",
+    "capitale": "Ndjamena"
+  },
+  {
+    "pays": "Tch%uFFFDque (la R%uFFFDpublique)",
+    "capitale": "Prague"
+  },
+  {
+    "pays": "Tha%uFFFDlande ",
+    "capitale": "Bangkok"
+  },
+  {
+    "pays": "Timor oriental ",
+    "capitale": "Dili"
+  },
+  {
+    "pays": "Togo ",
+    "capitale": "Lom%uFFFD"
+  },
+  {
+    "pays": "Tonga ",
+    "capitale": "Nuku'alofa"
+  },
+  {
+    "pays": "Trinit%uFFFD-et-Tobago ",
+    "capitale": "Port d'Espagne"
+  },
+  {
+    "pays": "Tunisie ",
+    "capitale": "Tunis"
+  },
+  {
+    "pays": "Turkm%uFFFDnistan ",
+    "capitale": "Achgabat"
+  },
+  {
+    "pays": "Turquie ",
+    "capitale": "Ankara"
+  },
+  {
+    "pays": "Tuvalu ",
+    "capitale": "Vaiaku"
+  },
+  {
+    "pays": "Ukraine ",
+    "capitale": "Kiev"
+  },
+  {
+    "pays": "Uruguay ",
+    "capitale": "Mont%uFFFDvid%uFFFDo"
+  },
+  {
+    "pays": "Vanuatu ",
+    "capitale": "Port-Vila"
+  },
+  {
+    "pays": "V%uFFFDn%uFFFDzu%uFFFDla ",
+    "capitale": "Caracas"
+  },
+  {
+    "pays": "Vietnam ",
+    "capitale": "Hano%uFFFD"
+  },
+  {
+    "pays": "Y%uFFFDmen ",
+    "capitale": "Sanaa"
+  },
+  {
+    "pays": "Zambie ",
+    "capitale": "Lusaka"
+  },
+  {
+    "pays": "Zimbabw%uFFFD ",
+    "capitale": "Harar%uFFFD"
+  }
+]

@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import auth.Session;
+import bot.QuestionCapitaleBot;
 import server.db.UsersRepository;
 
 public class ConnectedClient implements Runnable {
@@ -50,14 +51,13 @@ public class ConnectedClient implements Runnable {
 
 			} catch (ClassNotFoundException | IOException e) {
 				this.server.disconnectedClient(this);
-				
+
 				if (session.isConnected() == 1) {
 					server.getAuthClients().remove(this);
-				}
-				else {
+				} else {
 					server.getClients().remove(this);
 				}
-				
+
 				try {
 					this.closeClient();
 				} catch (IOException e1) {
@@ -95,18 +95,38 @@ public class ConnectedClient implements Runnable {
 					}
 				} else {
 					if (this.session.isConnected() == 1) {
+						if (this.session.getMessage().startsWith("!enableBot")) {
+							if (this.server.activateBot()) {
+								this.server.broadcastMessage("Bot activé", this.server.getBotSession());
+							} else {
+								this.server.broadcastMessage("Impossible d'activé le bot",
+										this.server.getBotSession());
+							}
+						}
+
+						if (this.session.getMessage().startsWith("!question")) {
+							String pays = this.server.newBotQuestion();
+							this.server.broadcastMessage("Quelle est la capitale de " + pays + " ?",
+									this.server.getBotSession());
+						}
+
+						if (this.session.getMessage().startsWith("!disableBot")) {
+							this.server.broadcastMessage("Bot désactivé", this.server.getBotSession());
+							this.server.disableBot();
+						}
+						
 						if (this.session.getPrivateId() != -1)
 							this.server.privateMessage(message, this.id, this.session.getPrivateId());
 						else
 							this.server.broadcastMessage(message, this.session);
 					} else {
 						boolean alreadyAuth = false;
-						
+
 						for (ConnectedClient client : server.getAuthClients()) {
 							if (client.getSession().getLogin().equals(session.getLogin()))
 								alreadyAuth = true;
 						}
-						
+
 						if (alreadyAuth) {
 							session.setConnected(-1);
 							session.setResponseMsg("Vous déjà authentifié");
@@ -122,6 +142,7 @@ public class ConnectedClient implements Runnable {
 								this.server.getClients().remove(this);
 								this.server.getAuthClients().add(this);
 								this.server.notifyNewAuth(this);
+
 							} else {
 								session.setConnected(-1);
 								session.setResponseMsg("Erreur de login/mdp");
@@ -133,8 +154,7 @@ public class ConnectedClient implements Runnable {
 			} else {
 				if (session.isConnected() == 1) {
 					this.server.disconnectedClient(this);
-				}
-				else {
+				} else {
 					this.server.getClients().remove(this);
 				}
 			}
