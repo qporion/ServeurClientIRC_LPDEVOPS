@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class Smiley {
 
@@ -35,15 +37,19 @@ public class Smiley {
 		return new Image(fis);
 	}
 
-	public Collection<Node> verifySmiley(String msg, Client client) {
+	public Node verifySmiley(String msg, Client client) {
 		this.client = client;
 
 		List<Node> l = parcoursMsg(msg);
 
-		Label fill = new Label("");
-		fill.setPrefWidth(395 - msg.length() * 6);
-		l.add(fill);
-		return l;
+		HBox box = new HBox();
+		box.setMaxWidth(399);
+		box.setMinWidth(399);
+		
+		for (Node n : l) {
+			box.getChildren().add(n);
+		}
+		return box;
 	}
 
 	private ArrayList<Node> parcoursMsg(String msg) {
@@ -66,14 +72,27 @@ public class Smiley {
 
 				nodes.addAll(parcoursMsg(msg.substring(0, idx)));
 				nodes.add(iv);
-				System.out.println(msg.substring(idx + keys.get(i).length()));
 				nodes.addAll(parcoursMsg(msg.substring(idx + keys.get(i).length())));
 				break;
 			}
 		}
 
 		if (nodes.size() == 0) {
-			if (msg.contains("<a>") && msg.contains("</a>")) {
+			if (msg.contains("[s]") && msg.contains("[/s]")) {
+				int idxStart = msg.indexOf("[s]");
+				int idxEnd = msg.substring(idxStart).indexOf("[/s]");
+				
+				ImageView iv = new ImageView();
+				iv.setImage(getSmiley(msg.substring(idxStart + 3, idxStart + idxEnd)));
+				iv.setFitWidth(20);
+				iv.setPreserveRatio(true);
+				iv.setSmooth(true);
+				iv.setCache(true);
+
+				nodes.addAll(parcoursMsg(msg.substring(0, idxStart)));
+				nodes.add(iv);
+				nodes.addAll(parcoursMsg(msg.substring(idxStart + idxEnd + 4)));
+			} else if (msg.contains("<a>") && msg.contains("</a>")) {
 				Button btnLabel = null;
 
 				int idxStart = msg.indexOf("<a>");
@@ -115,7 +134,6 @@ public class Smiley {
 			} else {
 				Label newLabel = new Label();
 				newLabel.setText(msg);
-				newLabel.setPrefWidth(msg.length() * 6);
 				newLabel.setWrapText(true);
 
 				nodes.add(newLabel);

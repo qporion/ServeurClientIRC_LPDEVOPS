@@ -49,7 +49,8 @@ public class Server {
 		}
 		
 		if (bot != null) {
-			if (verifyResponse(session.getLogin(), message) && !responseFound) {
+			if (verifyResponse(message) && !responseFound) {
+				responseFound = true;
 				broadcastMessage(session.getLogin()+" a gagné en "+bot.getTimeRemaining()+" s", botSession);
 			}
 			else if(!bot.isTimeRemaining() && !responseFound) {
@@ -139,9 +140,8 @@ public class Server {
 		return this.botSession;
 	}
 	
-	private boolean verifyResponse(String login, String msg) {
+	private boolean verifyResponse(String msg) {
 		if (msg.contains(bot.getResponse())) {
-			responseFound = true;
 			return true;
 		}
 		return false;

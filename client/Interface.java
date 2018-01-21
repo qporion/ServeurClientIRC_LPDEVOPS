@@ -1,12 +1,10 @@
 package client;
 
-import bot.QuestionCapitaleBot;
 import client.views.AuthPanel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Interface extends Application {

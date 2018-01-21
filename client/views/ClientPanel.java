@@ -11,6 +11,9 @@ import java.util.List;
 import client.Client;
 import client.views.components.ButtonLogin;
 import client.views.components.ButtonPerso;
+import client.views.components.HelpButton;
+import client.views.components.PopupHelp;
+import client.views.components.PopupSmiley;
 import client.views.components.Smiley;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -33,8 +36,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.*;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class ClientPanel extends Parent implements ChangeablePanel {
@@ -71,7 +78,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 				Label newLabel = new Label();
 				Button btnLabel = null;
 				
-				TextFlow receivedText = (TextFlow) tabPanel.lookup("#receivedText_" + privateId);				
+				VBox receivedText = (VBox) tabPanel.lookup("#receivedText_" + privateId);				
 				
 				receivedText.getChildren().addAll(smiley.verifySmiley(msg, client));
 				
@@ -205,7 +212,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		TextArea textToSend = new TextArea();
 		// messages recu
 		ScrollPane scrollReceivedText = new ScrollPane();
-		TextFlow receivedText = new TextFlow();
+		VBox receivedText = new VBox();
 		// bouton permettant d'envoyer du texte
 		Button sendBtn = new ButtonPerso();
 		// bouton permettant d'effacer la zone de saisie
@@ -234,7 +241,6 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		receivedText.setPrefHeight(280);
 		receivedText.setPrefWidth(400);
 		receivedText.setId("receivedText_" + id);
-
 		// avec le scroll
 		scrollReceivedText.setLayoutX(50);
 		scrollReceivedText.setLayoutY(50);
@@ -263,55 +269,8 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 					Button btnLabel = null;
 					Label newLabel = new Label();
 					
-					if (msg.contains("<a>") && msg.contains("</a>")) {
-						Label newLabel2 = new Label();
-						
-						int idxStart = msg.indexOf("<a>");
-						int idxEnd = msg.substring(idxStart).indexOf("</a>");
-
-						newLabel.setText(msg.substring(0, idxStart));
-						newLabel2.setText(msg.substring(idxStart + idxEnd+4));
-						newLabel2.setPrefWidth(200);
-						String url = msg.substring(idxStart + 3, idxStart + idxEnd);
-
-						btnLabel = new ButtonLogin(url);
-						btnLabel.setOnAction((ActionEvent e) -> {
-							URI uri = URI.create(url);
-							try {
-								Desktop.getDesktop().browse(uri);
-							} catch (IOException ex) {
-								ex.printStackTrace();
-							}
-						});
-						
-						receivedText.getChildren().add(newLabel);
-						receivedText.getChildren().add(btnLabel);
-						receivedText.getChildren().add(newLabel2);
-						
-						
-					}
-					else if (msg.contains("[a]") && msg.contains("[/a]")) {
-						Label newLabel2 = new Label();
-						
-						int idxStart = msg.indexOf("[a]");
-						int idxEnd = msg.substring(idxStart).indexOf("[/a]");
-
-						newLabel.setText(msg.substring(0, idxStart));
-						newLabel2.setText(msg.substring(idxStart + idxEnd+4));
-						newLabel2.setPrefWidth(250);
-						String login = msg.substring(idxStart + 3, idxStart + idxEnd);
-
-						btnLabel = new ButtonLogin(login, client, thisPanel);
-						
-						receivedText.getChildren().add(newLabel);
-						receivedText.getChildren().add(btnLabel);
-						receivedText.getChildren().add(newLabel2);
-					}
-					else {
-						newLabel.setText(msg);
-						newLabel.setPrefWidth(400);
-						receivedText.getChildren().add(newLabel);
-					}
+					Smiley smiley = new Smiley();
+					receivedText.getChildren().addAll(smiley.verifySmiley(msg, client));
 					
 					client.getSession().setMessage(msg);
 					client.getSession().setPrivateId(id);
@@ -366,6 +325,34 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		textMembers.setId("textMembers_" + id);
 		box.getChildren().add(textMembers);
 
+		Button helpBtn = new HelpButton("?");
+		
+		helpBtn.setLayoutX(50);
+		helpBtn.setLayoutY(420);
+		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Popup popup = new PopupHelp(textToSend);
+				popup.show(getScene().getWindow());
+			}
+		});
+		helpBtn.setId("helpBtn_" + id);
+		box.getChildren().add(helpBtn);
+		
+		Button smileyBtn = new HelpButton(":)");
+		
+		smileyBtn.setLayoutX(80);
+		smileyBtn.setLayoutY(420);
+		smileyBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Popup popup = new PopupSmiley(textToSend);
+				popup.show(getScene().getWindow());
+			}
+		});
+		smileyBtn.setId("smileyBtn_" + id);
+		box.getChildren().add(smileyBtn);
+		
 		mainTab.setContent(box);
 		return mainTab;
 	}
