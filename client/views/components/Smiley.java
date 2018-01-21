@@ -1,0 +1,127 @@
+package client.views.components;
+
+import java.awt.Desktop;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import client.Client;
+import client.views.ClientPanel;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class Smiley {
+
+	static final String SMILEY_REP = "src\\assets\\emoji\\";
+	private Client client;
+
+	public Image getSmiley(String code) {
+		InputStream fis = null;
+		try {
+			String current = new java.io.File(".").getCanonicalPath();
+			fis = new FileInputStream(current + "\\" + SMILEY_REP + code + ".png");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new Image(fis);
+	}
+
+	public Collection<Node> verifySmiley(String msg, Client client) {
+		this.client = client;
+
+		List<Node> l = parcoursMsg(msg);
+
+		Label fill = new Label("");
+		fill.setPrefWidth(395 - msg.length() * 6);
+		l.add(fill);
+		return l;
+	}
+
+	private ArrayList<Node> parcoursMsg(String msg) {
+		ArrayList<Node> nodes = new ArrayList<>();
+
+		Map<String, String> trigger_code = SmileyList.getMap();
+		List<String> keys = new ArrayList<>();
+		keys.addAll(trigger_code.keySet());
+
+		for (int i = 0; i < keys.size(); i++) {
+			if (msg.contains(keys.get(i))) {
+				int idx = msg.indexOf(keys.get(i));
+
+				ImageView iv = new ImageView();
+				iv.setImage(getSmiley(trigger_code.get(keys.get(i))));
+				iv.setFitWidth(20);
+				iv.setPreserveRatio(true);
+				iv.setSmooth(true);
+				iv.setCache(true);
+
+				nodes.addAll(parcoursMsg(msg.substring(0, idx)));
+				nodes.add(iv);
+				System.out.println(msg.substring(idx + keys.get(i).length()));
+				nodes.addAll(parcoursMsg(msg.substring(idx + keys.get(i).length())));
+				break;
+			}
+		}
+
+		if (nodes.size() == 0) {
+			if (msg.contains("<a>") && msg.contains("</a>")) {
+				Button btnLabel = null;
+
+				int idxStart = msg.indexOf("<a>");
+				int idxEnd = msg.substring(idxStart).indexOf("</a>");
+
+				String url = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+				btnLabel = new ButtonLogin(url);
+				// btnLabel.setMaxHeight(25);
+				btnLabel.setWrapText(true);
+				btnLabel.setOnAction((ActionEvent e) -> {
+					URI uri = URI.create(url);
+					try {
+						Desktop.getDesktop().browse(uri);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
+				});
+
+				nodes.addAll(parcoursMsg(msg.substring(0, idxStart)));
+				nodes.add(btnLabel);
+				nodes.addAll(parcoursMsg(msg.substring(idxStart + idxEnd + 4)));
+
+			} else if (msg.contains("[a]") && msg.contains("[/a]")) {
+				Button btnLabel = null;
+
+				int idxStart = msg.indexOf("[a]");
+				int idxEnd = msg.substring(idxStart).indexOf("[/a]");
+
+				String login = msg.substring(idxStart + 3, idxStart + idxEnd);
+
+				btnLabel = new ButtonLogin(login, client, (ClientPanel) client.getClientPanel());
+				btnLabel.setWrapText(true);
+
+				nodes.addAll(parcoursMsg(msg.substring(0, idxStart)));
+				nodes.add(btnLabel);
+				nodes.addAll(parcoursMsg(msg.substring(idxStart + idxEnd + 4)));
+
+			} else {
+				Label newLabel = new Label();
+				newLabel.setText(msg);
+				newLabel.setPrefWidth(msg.length() * 6);
+				newLabel.setWrapText(true);
+
+				nodes.add(newLabel);
+			}
+		}
+
+		return nodes;
+	}
+}

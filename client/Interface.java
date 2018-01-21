@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Interface extends Application {
@@ -22,7 +23,7 @@ public class Interface extends Application {
 		stage.setTitle("Mon ch@t");
 		stage.setScene(scene);
 		stage.show();
-
+		
 	}
 
 	@Override

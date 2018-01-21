@@ -11,6 +11,7 @@ import java.util.List;
 import client.Client;
 import client.views.components.ButtonLogin;
 import client.views.components.ButtonPerso;
+import client.views.components.Smiley;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -41,6 +42,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 	public final static int X = 600;
 	public final static int Y = 500;
 
+	private Smiley smiley = new Smiley();
 	TabPane tabPanel;
 
 	public Client client;
@@ -71,57 +73,8 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 				
 				TextFlow receivedText = (TextFlow) tabPanel.lookup("#receivedText_" + privateId);				
 				
-				if (msg.contains("<a>") && msg.contains("</a>")) {
-					Label newLabel2 = new Label();
-					
-					int idxStart = msg.indexOf("<a>");
-					int idxEnd = msg.substring(idxStart).indexOf("</a>");
-
-					newLabel.setText(msg.substring(0, idxStart));
-					newLabel2.setText(msg.substring(idxStart + idxEnd+4));
-					newLabel2.setPrefWidth(200);
-					String url = msg.substring(idxStart + 3, idxStart + idxEnd);
-
-					btnLabel = new ButtonLogin(url);
-					btnLabel.setOnAction((ActionEvent e) -> {
-						URI uri = URI.create(url);
-						try {
-							Desktop.getDesktop().browse(uri);
-						} catch (IOException ex) {
-							ex.printStackTrace();
-						}
-					});
-					
-					receivedText.getChildren().add(newLabel);
-					receivedText.getChildren().add(btnLabel);
-					receivedText.getChildren().add(newLabel2);
-					
-					
-				}
-				else if (msg.contains("[a]") && msg.contains("[/a]")) {
-					Label newLabel2 = new Label();
-					
-					int idxStart = msg.indexOf("[a]");
-					int idxEnd = msg.substring(idxStart).indexOf("[/a]");
-
-					newLabel.setText(msg.substring(0, idxStart));
-					newLabel2.setText(msg.substring(idxStart + idxEnd+4));
-					newLabel2.setPrefWidth(250);
-					String login = msg.substring(idxStart + 3, idxStart + idxEnd);
-
-					btnLabel = new ButtonLogin(login, client, thisPanel);
-					
-					receivedText.getChildren().add(newLabel);
-					receivedText.getChildren().add(btnLabel);
-					receivedText.getChildren().add(newLabel2);
-				}
-				else {
-					newLabel.setText(msg);
-					newLabel.setPrefWidth(400);
-					receivedText.getChildren().add(newLabel);
-				}
+				receivedText.getChildren().addAll(smiley.verifySmiley(msg, client));
 				
-
 				VBox connected = (VBox) tabPanel.lookup("#connected_" + privateId);
 				connected.getChildren().clear();
 				client.getSession().getListeClients().forEach((id, login) -> {

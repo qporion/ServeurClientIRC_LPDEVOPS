@@ -13,17 +13,17 @@ import javafx.scene.input.MouseEvent;
 public class ButtonLogin extends Button{
 	int id = 0;
 	
-	public ButtonLogin () {
+	public ButtonLogin() {
 		super();
 		setStyleButton();
 	}
 	
-	public ButtonLogin (String text) {
+	public ButtonLogin(String text) {
 		super(text);
 		setStyleButton();
 	}
 	
-	public ButtonLogin (String login,Client client, ClientPanel panel) {
+	public ButtonLogin(String login,Client client, ClientPanel panel) {
 		super(login);
 		setStyleButton();
 		if (client.getSession().getListeClients().containsValue(login)) {
