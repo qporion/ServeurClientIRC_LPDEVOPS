@@ -1,10 +1,15 @@
 package client.views.components;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +28,7 @@ import javafx.scene.layout.Pane;
 
 public class Smiley {
 
-	static final String SMILEY_REP = "src\\assets\\emoji\\";
+	public static final String SMILEY_REP = "assets\\emoji\\";
 	private Client client;
 
 	public Image getSmiley(String code) {
@@ -45,7 +50,7 @@ public class Smiley {
 		HBox box = new HBox();
 		box.setMaxWidth(399);
 		box.setMinWidth(399);
-		
+
 		for (Node n : l) {
 			box.getChildren().add(n);
 		}
@@ -78,10 +83,30 @@ public class Smiley {
 		}
 
 		if (nodes.size() == 0) {
-			if (msg.contains("[s]") && msg.contains("[/s]")) {
+			if (msg.contains("[f]") && msg.contains("[/f]")) {
+				Button btnLabel = null;
+
+				int idxStart = msg.indexOf("[f]");
+				int idxEnd = msg.substring(idxStart).indexOf("[/f]");
+
+				String url = msg.substring(idxStart + 3, idxStart + idxEnd);
+				File file = new File(url);
+
+				btnLabel = new ButtonLogin(url);
+				btnLabel.setWrapText(true);
+				btnLabel.setOnAction((ActionEvent e) -> {
+					ClientPanel panel = (ClientPanel) this.client.getClientPanel();
+					
+					panel.sendFileRequest(url);
+				});
+
+				nodes.addAll(parcoursMsg(msg.substring(0, idxStart)));
+				nodes.add(btnLabel);
+				nodes.addAll(parcoursMsg(msg.substring(idxStart + idxEnd + 4)));
+			} else if (msg.contains("[s]") && msg.contains("[/s]")) {
 				int idxStart = msg.indexOf("[s]");
 				int idxEnd = msg.substring(idxStart).indexOf("[/s]");
-				
+
 				ImageView iv = new ImageView();
 				iv.setImage(getSmiley(msg.substring(idxStart + 3, idxStart + idxEnd)));
 				iv.setFitWidth(20);

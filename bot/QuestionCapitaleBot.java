@@ -18,11 +18,12 @@ public class QuestionCapitaleBot {
 	private String response;
 	private Calendar end, start;
 	
-	final String JSON_FILE = "src\\assets\\json\\capitales_pays.json";
+	final String JSON_FILE = "assets\\json\\capitales_pays.json";
 
 	public QuestionCapitaleBot() {
 		try {
-			String current = new java.io.File( "." ).getCanonicalPath();
+			String current = new java.io.File( "." ).getAbsolutePath();
+			System.out.println(getClass().getResource("capitales_pays.json"));
 			InputStream fis = new FileInputStream(current+"\\"+JSON_FILE);
 
 			JsonReader jsonReader = Json.createReader(fis);

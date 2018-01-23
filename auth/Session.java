@@ -17,6 +17,8 @@ public class Session implements Serializable{
 	private String login = "", message, responseMsg;
 	private int isConnected = 0;
 	private int privateId = -1; 
+	private Map<String, byte[]> files = new HashMap<>();
+	private byte[] fileReceived = null;
 
    private boolean sendMessage = false, addUser = false;
    private Map<Integer, String> listeClients = new HashMap<>();
@@ -58,9 +60,22 @@ public class Session implements Serializable{
 	public void setPrivateId(int privateId) {
 		this.privateId = privateId;
 	}
-        
+     
+    public Map<String, byte[]> getFiles() {
+		return files;
+	}
 
-    /**
+	public void setFiles(Map<String, byte[]> files) {
+		if (files.size() < 6)
+			this.files = files;
+	}
+
+	public void addFile(String fileName, byte[] file) {
+		if (this.files.size() < 6)
+			this.files.put(fileName, file);
+	}
+	
+	/**
      * @return the listeClients
      */
     public Map<Integer, String> getListeClients() {
@@ -96,6 +111,14 @@ public class Session implements Serializable{
 
 	public void setAddUser(boolean addUser) {
 		this.addUser = addUser;
+	}
+
+	public byte[] getFileReceived() {
+		return fileReceived;
+	}
+
+	public void setFileReceived(byte[] fileReceived) {
+		this.fileReceived = fileReceived;
 	}
 
 	public String encryptedMessage() {

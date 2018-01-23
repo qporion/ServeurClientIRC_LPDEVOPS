@@ -3,9 +3,15 @@ package server;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import auth.Session;
 import bot.QuestionCapitaleBot;
@@ -20,6 +26,7 @@ public class ConnectedClient implements Runnable {
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	private Session session;
+	private List<String> filesUpload = new ArrayList<>();
 
 	public ConnectedClient(Server server, Socket sock) {
 		this.id = ConnectedClient.counterId++;
@@ -76,6 +83,30 @@ public class ConnectedClient implements Runnable {
 				session.getListeClients().clear();
 				this.server.getAuthClients().forEach(
 						client -> session.getListeClients().put(client.getId(), client.getSession().getLogin()));
+				
+				if (!this.session.getFiles().isEmpty()) {
+					filesUpload.clear();
+					this.session.getFiles().forEach((String name, byte[] content) -> {
+						File file = new File(MainServer.UPLOAD_DIR + "\\" + name);
+						
+						try {
+							if (!file.exists()) {
+								Files.write(file.toPath(), content);
+							} else {
+								int cpt = 0;
+								while ((file = new File(MainServer.UPLOAD_DIR + "\\" + (cpt++) + name)).exists())
+									;
+
+								Files.write(file.toPath(), content);
+							}
+							filesUpload.add(file.getName());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					});
+
+					this.server.broadcastFiles(this.filesUpload);
+				}
 
 				if (this.session.isAddUser()) {
 					if (db.newLogin(this.session.getLogin(), this.session.getMessage())) {
@@ -95,15 +126,24 @@ public class ConnectedClient implements Runnable {
 					}
 				} else {
 					if (this.session.isConnected() == 1) {
+						boolean broadcast =true;
 						if (this.session.getMessage().startsWith("!enableBot")) {
 							if (this.server.activateBot()) {
 								this.server.broadcastMessage("Bot activé", this.server.getBotSession());
 							} else {
-								this.server.broadcastMessage("Impossible d'activé le bot",
-										this.server.getBotSession());
+								this.server.broadcastMessage("Impossible d'activé le bot", this.server.getBotSession());
 							}
 						}
 
+						if (this.session.getMessage().startsWith("%!fileRequest:")) {
+							this.server.sendFile(
+									this.session.getMessage().substring(
+											this.session.getMessage().indexOf(":")+1
+											),
+									this
+									);
+							broadcast = false;
+						}
 						if (this.session.getMessage().startsWith("!question")) {
 							String pays = this.server.newBotQuestion();
 							this.server.broadcastMessage("Quelle est la capitale de " + pays + " ?",
@@ -114,11 +154,13 @@ public class ConnectedClient implements Runnable {
 							this.server.broadcastMessage("Bot désactivé", this.server.getBotSession());
 							this.server.disableBot();
 						}
-						
+
 						if (this.session.getPrivateId() != -1)
 							this.server.privateMessage(message, this.id, this.session.getPrivateId());
-						else
+						else if (broadcast)
 							this.server.broadcastMessage(message, this.session);
+						
+						broadcast = true;
 					} else {
 						boolean alreadyAuth = false;
 

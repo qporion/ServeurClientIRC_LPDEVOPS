@@ -1,15 +1,18 @@
 package client;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 import auth.Session;
 import client.views.ClientPanel;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import server.MainServer;
 
 public class ClientReceive implements Runnable {
 	public Client client;
@@ -43,6 +46,27 @@ public class ClientReceive implements Runnable {
 				this.client.getSession().setPrivateId(-1);
 				this.client.getSession().setAddUser(false);
 
+				if (session.isConnected() == 1 && session.getMessage() != null) {
+				if (session.getMessage().startsWith("%!file:")) {
+					String fileName = session.getMessage().substring(
+							session.getMessage().indexOf(":")+1
+							);
+					File file = new File(fileName);
+					
+					if (!file.exists()) {
+						Files.write(file.toPath(), session.getFileReceived());
+					} else {
+						int cpt = 0;
+						while ((file = new File(MainServer.UPLOAD_DIR + "\\" + (cpt++) + fileName)).exists())
+							;
+
+						Files.write(file.toPath(), session.getFileReceived());
+					}
+					
+					session.setResponseMsg("Fichier "+file.getName()+" reçu ! -> "+file.getAbsolutePath());
+				}
+				}
+				
 				if (session.isConnected() == 1 && !connected) {
 					ClientPanel newPanel = new ClientPanel();
 					newPanel.client = this.client;

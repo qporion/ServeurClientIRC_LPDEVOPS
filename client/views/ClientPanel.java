@@ -1,11 +1,18 @@
 package client.views;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 
 import java.awt.Desktop;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import client.Client;
@@ -30,6 +37,10 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -40,6 +51,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -71,17 +83,17 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 
 	public void updateTextArea(final String msg, int privateId) {
 		ClientPanel thisPanel = this;
-		
+
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				Label newLabel = new Label();
 				Button btnLabel = null;
-				
-				VBox receivedText = (VBox) tabPanel.lookup("#receivedText_" + privateId);				
-				
+
+				VBox receivedText = (VBox) tabPanel.lookup("#receivedText_" + privateId);
+
 				receivedText.getChildren().addAll(smiley.verifySmiley(msg, client));
-				
+
 				VBox connected = (VBox) tabPanel.lookup("#connected_" + privateId);
 				connected.getChildren().clear();
 				client.getSession().getListeClients().forEach((id, login) -> {
@@ -167,6 +179,18 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 			} catch (IOException e) {
 				client.disconnectedServer();
 			}
+		}
+	}
+
+	public void sendFileRequest(String name) {
+		this.client.getSession().setPrivateId(-1);
+		this.client.getSession().setMessage("%!fileRequest:" + name);
+		try {
+			this.client.out.writeObject(this.client.getSession());
+			this.client.out.flush();
+			this.client.out.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -268,14 +292,16 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 					String msg = textToSend.getText();
 					Button btnLabel = null;
 					Label newLabel = new Label();
-					
+
 					Smiley smiley = new Smiley();
 					receivedText.getChildren().addAll(smiley.verifySmiley(msg, client));
-					
+
 					client.getSession().setMessage(msg);
 					client.getSession().setPrivateId(id);
 					sendMessage();
+
 					textToSend.setText("");
+					client.getSession().setFiles(new HashMap<String, byte[]>());
 
 					if (client.getSession().getMessage().startsWith("/chuchoter à ")) {
 						String loginPriv = client.getSession().getListeClients()
@@ -306,6 +332,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 			@Override
 			public void handle(ActionEvent event) {
 				textToSend.clear();
+				client.getSession().setFiles(new HashMap<String, byte[]>());
 			}
 		});
 		clearBtn.setId("clearBtn_" + id);
@@ -326,7 +353,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		box.getChildren().add(textMembers);
 
 		Button helpBtn = new HelpButton("?");
-		
+
 		helpBtn.setLayoutX(50);
 		helpBtn.setLayoutY(420);
 		helpBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -338,9 +365,9 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		});
 		helpBtn.setId("helpBtn_" + id);
 		box.getChildren().add(helpBtn);
-		
+
 		Button smileyBtn = new HelpButton(":)");
-		
+
 		smileyBtn.setLayoutX(80);
 		smileyBtn.setLayoutY(420);
 		smileyBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -352,7 +379,87 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 		});
 		smileyBtn.setId("smileyBtn_" + id);
 		box.getChildren().add(smileyBtn);
-		
+
+		Label lblUpload = new Label("Partagez vos fichiers !");
+		lblUpload.setPadding(new Insets(5, 5, 5, 5));
+
+		ImageView iv = new ImageView();
+		try {
+			iv.setImage(new Image(new FileInputStream(Smiley.SMILEY_REP + "\\1f4d2.png")));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		iv.setFitWidth(20);
+		iv.setPreserveRatio(true);
+		iv.setSmooth(true);
+
+		Button btnUpload = new ButtonPerso();
+		btnUpload.setLayoutX(152);
+		btnUpload.setLayoutY(0);
+		btnUpload.setGraphic(iv);
+		btnUpload.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				FileChooser fileChooser = new FileChooser();
+				List<File> listFile = fileChooser.showOpenMultipleDialog(null);
+
+				if (listFile != null) {
+					lblUpload.setText("");
+					for (File file : listFile) {
+						try {
+							client.getSession().addFile(file.getName(), Files.readAllBytes(file.toPath()));
+							lblUpload.setText(lblUpload.getText() + ", " + file.getName());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+		Pane pane = new Pane();
+		pane.setLayoutX(110);
+		pane.setLayoutY(420);
+		pane.setMinWidth(180);
+		pane.setMinHeight(28);
+		pane.setStyle("-fx-background-color:#fff;" + "-fx-border-color: #4286f4;" + "-fx-border-radius: 2px;"
+				+ "-fx-border-width: 1;" + "-fx-border-style: solid;");
+		pane.setOnDragOver(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				Dragboard db = event.getDragboard();
+				if (db.hasFiles()) {
+					event.acceptTransferModes(TransferMode.COPY);
+				} else {
+					event.consume();
+				}
+			}
+		});
+
+		pane.setOnDragDropped(new EventHandler<DragEvent>() {
+			@Override
+			public void handle(DragEvent event) {
+				Dragboard db = event.getDragboard();
+				boolean success = false;
+				if (db.hasFiles()) {
+					success = true;
+					lblUpload.setText("");
+					for (File file : db.getFiles()) {
+						try {
+							client.getSession().addFile(file.getName(), Files.readAllBytes(file.toPath()));
+							lblUpload.setText(lblUpload.getText() + ", " + file.getName());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				event.setDropCompleted(success);
+				event.consume();
+			}
+		});
+		pane.getChildren().add(lblUpload);
+		pane.getChildren().add(btnUpload);
+		box.getChildren().add(pane);
+
 		mainTab.setContent(box);
 		return mainTab;
 	}

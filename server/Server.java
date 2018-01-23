@@ -1,6 +1,8 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import auth.Session;
@@ -47,14 +49,13 @@ public class Server {
 				client.sendMessage(this.session);
 			}
 		}
-		
+
 		if (bot != null) {
 			if (verifyResponse(message) && !responseFound) {
 				responseFound = true;
-				broadcastMessage(session.getLogin()+" a gagné en "+bot.getTimeRemaining()+" s", botSession);
-			}
-			else if(!bot.isTimeRemaining() && !responseFound) {
-				broadcastMessage("Fin du temps ! La réponse était : "+bot.getResponse(), botSession);
+				broadcastMessage(session.getLogin() + " a gagné en " + bot.getTimeRemaining() + " s", botSession);
+			} else if (!bot.isTimeRemaining() && !responseFound) {
+				broadcastMessage("Fin du temps ! La réponse était : " + bot.getResponse(), botSession);
 			}
 		}
 	}
@@ -131,19 +132,47 @@ public class Server {
 		responseFound = false;
 		return bot.getRandomPays();
 	}
-	
+
 	public void disableBot() {
 		this.bot = null;
 		this.botSession = null;
 	}
+
 	public Session getBotSession() {
 		return this.botSession;
 	}
-	
+
+	public void broadcastFiles(List<String> files) {
+		String msg = "Nouveau(x) fichier(s) de " + this.session.getLogin() + " : ";
+		for (String file : files) {
+			msg += "[f]" + file + "[/f]";
+		}
+		this.session.setLogin("Serveur");
+		broadcastMessage(msg, session);
+	}
+
+	public void sendFile(String fileName, ConnectedClient client) {
+		client.getSession().getListeClients().clear();
+		authClients.forEach(
+				clientAuth -> client.getSession().getListeClients().put(clientAuth.getId(), clientAuth.getSession().getLogin()));
+		
+		File file = new File(MainServer.UPLOAD_DIR + "\\" + fileName);
+		if (file.exists()) {
+			try {
+				client.getSession().setFileReceived(Files.readAllBytes(file.toPath()));
+				client.getSession().setMessage("%!file:"+fileName);
+				client.sendMessage(client.getSession());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private boolean verifyResponse(String msg) {
 		if (msg.contains(bot.getResponse())) {
 			return true;
 		}
 		return false;
 	}
+
 }

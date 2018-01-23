@@ -1,5 +1,6 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -16,10 +17,25 @@ import server.db.UsersRepository;
 
 public class MainServer {
 
+	public static final String UPLOAD_DIR = "uploads";
+	
 	public static void main(String[] args) throws IOException {
 		UsersRepository db = UsersRepository.getInstance();
 		db.init();
 		
+		File theDir = new File(UPLOAD_DIR);
+
+		if (!theDir.exists()) {
+		    try{
+		        theDir.mkdir();
+		    } 
+		    catch(SecurityException se){
+		        System.exit(0);
+		    }        
+		}
+
+		Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+
 		if (args.length != 1) {
 			printUsage();
 		} else {
