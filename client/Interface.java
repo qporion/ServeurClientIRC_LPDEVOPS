@@ -18,7 +18,7 @@ public class Interface extends Application {
 		Group root = new Group();
 		root.getChildren().add(authPanel);
 		Scene scene = new Scene(root, AuthPanel.X, AuthPanel.Y);
-		stage.setTitle("Mon ch@t");
+		stage.setTitle("Mon ch@t");
 		stage.setScene(scene);
 		stage.show();
 		

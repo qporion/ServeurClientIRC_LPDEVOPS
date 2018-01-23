@@ -56,7 +56,7 @@ public class PopupHelp extends Popup {
 		
 		label = new Label("Vous pouvez utiliser les commandes :\n"
 				+ " - !enableBot pour activer le bot.\n"
-				+ " - !diableBot pour le désactiver.\n"
+				+ " - !diableBot pour le dÃ©sactiver.\n"
 				+ " - !question pour demander une question.");
 		
 		box.getChildren().add(label);

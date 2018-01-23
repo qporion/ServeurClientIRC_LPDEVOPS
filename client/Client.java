@@ -43,7 +43,7 @@ public class Client {
 		} catch (IOException e) {
 		}
 		finally {
-			this.clientPanel.updateTextArea("Impossible de joindre le serveur, veuillez redémarrer votre client");
+			this.clientPanel.updateTextArea("Impossible de joindre le serveur, veuillez redÃ©marrer votre client");
 		}
 	}
 

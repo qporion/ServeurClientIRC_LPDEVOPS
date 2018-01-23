@@ -60,7 +60,7 @@ public class AuthPanel extends Parent implements ChangeablePanel {
 		this.getChildren().add(userTextField);
 
 		// ///////password:
-		this.password = new Label("mdp :");
+		this.password = new Label("Mdp :");
 		password.setLayoutX(70);
 		password.setLayoutY(60);
 		password.setPrefHeight(10);

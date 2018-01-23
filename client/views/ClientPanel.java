@@ -69,7 +69,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 	public ClientPanel() {
 		tabPanel = new TabPane();
 
-		Tab mainTab = createTab("Chat général", -1);
+		Tab mainTab = createTab("Chat gÃ©nÃ©ral", -1);
 		mainTab.setClosable(false);
 		tabPanel.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 		tabPanel.getTabs().add(mainTab);
@@ -103,7 +103,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 
 					TextArea textToSend = (TextArea) tabPanel.lookup("#textToSend_" + privateId);
 					btn.setOnMouseClicked((MouseEvent e) -> {
-						textToSend.setText("/chuchoter à " + login + " ");
+						textToSend.setText("/chuchoter ï¿½ " + login + " ");
 					});
 
 					connected.getChildren().add(btn);
@@ -132,17 +132,17 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 	}
 
 	private void sendMessage() {
-		if (this.client.getSession().getMessage().startsWith("/chuchoter à ")) {
-			String msg = this.client.getSession().getMessage().substring("/chuchoter à ".length());
+		if (this.client.getSession().getMessage().startsWith("/chuchoter Ã  ")) {
+			String msg = this.client.getSession().getMessage().substring("/chuchoter Ã  ".length());
 
-			if (this.client.getSession().getMessage().length() <= "/chuchoter à ".length() + 3) {
-				this.client.getClientPanel().updateTextArea("Client >> Synthax : /chuchoter à [login] [message]");
+			if (this.client.getSession().getMessage().length() <= "/chuchoter Ã  ".length() + 3) {
+				this.client.getClientPanel().updateTextArea("Client >> Synthax : /chuchoter Ã  [login] [message]");
 			} else {
 				int idxLogin = msg.indexOf(" ");
 				String login = msg.substring(0, idxLogin);
 
 				if (idxLogin + 1 >= msg.length()) {
-					this.client.getClientPanel().updateTextArea("Client >> Synthax : /chuchoter à [login] [message]");
+					this.client.getClientPanel().updateTextArea("Client >> Synthax : /chuchoter Ã  [login] [message]");
 				} else {
 					msg = msg.substring(idxLogin + 1);
 					this.client.getSession().setMessage(msg);
@@ -303,7 +303,7 @@ public class ClientPanel extends Parent implements ChangeablePanel {
 					textToSend.setText("");
 					client.getSession().setFiles(new HashMap<String, byte[]>());
 
-					if (client.getSession().getMessage().startsWith("/chuchoter à ")) {
+					if (client.getSession().getMessage().startsWith("/chuchoter Ã  ")) {
 						String loginPriv = client.getSession().getListeClients()
 								.get(new Integer(client.getSession().getPrivateId()));
 						Tab newTab = createTab(loginPriv, client.getSession().getPrivateId());

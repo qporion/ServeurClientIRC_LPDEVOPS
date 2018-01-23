@@ -30,7 +30,7 @@ public class Server {
 	}
 
 	public void notifyNewAuth(ConnectedClient client) {
-		String msg = "[a]" + client.getSession().getLogin() + "[/a] à rejoint le salon !";
+		String msg = "[a]" + client.getSession().getLogin() + "[/a] Ã  rejoint le salon !";
 		this.session.setLogin("Serveur");
 		this.broadcastMessage(msg, this.session);
 	}
@@ -53,9 +53,9 @@ public class Server {
 		if (bot != null) {
 			if (verifyResponse(message) && !responseFound) {
 				responseFound = true;
-				broadcastMessage(session.getLogin() + " a gagné en " + bot.getTimeRemaining() + " s", botSession);
+				broadcastMessage(session.getLogin() + " a gagnï¿½ en " + bot.getTimeRemaining() + " s", botSession);
 			} else if (!bot.isTimeRemaining() && !responseFound) {
-				broadcastMessage("Fin du temps ! La réponse était : " + bot.getResponse(), botSession);
+				broadcastMessage("Fin du temps ! La rï¿½ponse ï¿½tait : " + bot.getResponse(), botSession);
 			}
 		}
 	}
@@ -78,7 +78,7 @@ public class Server {
 					client -> rec.getSession().getListeClients().put(client.getId(), client.getSession().getLogin()));
 		}
 		if (rec != null && send != null) {
-			msg = send.getSession().getLogin() + " vous à chuchoté : " + msg;
+			msg = send.getSession().getLogin() + " vous ï¿½ chuchotï¿½ : " + msg;
 			rec.getSession().setResponseMsg(msg);
 			rec.getSession().setPrivateId(idSend);
 			rec.sendMessage(rec.getSession());
@@ -87,7 +87,7 @@ public class Server {
 
 	public void disconnectedClient(ConnectedClient client) {
 		this.authClients.remove(client);
-		String msg = client.getSession().getLogin() + " à quitté le salon !";
+		String msg = client.getSession().getLogin() + " ï¿½ quittï¿½ le salon !";
 		this.session.setLogin("Serveur");
 		this.broadcastMessage(msg, this.session);
 	}

@@ -63,7 +63,7 @@ public class ClientReceive implements Runnable {
 						Files.write(file.toPath(), session.getFileReceived());
 					}
 					
-					session.setResponseMsg("Fichier "+file.getName()+" reçu ! -> "+file.getAbsolutePath());
+					session.setResponseMsg("Fichier "+file.getName()+" reÃ§u ! -> "+file.getAbsolutePath());
 				}
 				}
 				

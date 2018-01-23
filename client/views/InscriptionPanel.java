@@ -118,7 +118,7 @@ public class InscriptionPanel extends Parent implements ChangeablePanel {
 						client.getSession().setConnected(0);
 					}
 				} else {
-					errorLabel.setText("La confirmation du mdp est différente du mdp");
+					errorLabel.setText("La confirmation du mdp est diffÃ©rente du mdp");
 				}
 			}
 		});

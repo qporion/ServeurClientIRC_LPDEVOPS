@@ -121,7 +121,7 @@ public class ConnectedClient implements Runnable {
 						this.server.notifyNewAuth(this);
 					} else {
 						session.setConnected(-1);
-						session.setResponseMsg("Login dÈj‡ utilisÈ");
+						session.setResponseMsg("Login d√©j√† utilis√©");
 						this.sendMessage(session);
 					}
 				} else {
@@ -129,9 +129,9 @@ public class ConnectedClient implements Runnable {
 						boolean broadcast =true;
 						if (this.session.getMessage().startsWith("!enableBot")) {
 							if (this.server.activateBot()) {
-								this.server.broadcastMessage("Bot activÈ", this.server.getBotSession());
+								this.server.broadcastMessage("Bot activ√©", this.server.getBotSession());
 							} else {
-								this.server.broadcastMessage("Impossible d'activÈ le bot", this.server.getBotSession());
+								this.server.broadcastMessage("Impossible d'activ√© le bot", this.server.getBotSession());
 							}
 						}
 
@@ -151,7 +151,7 @@ public class ConnectedClient implements Runnable {
 						}
 
 						if (this.session.getMessage().startsWith("!disableBot")) {
-							this.server.broadcastMessage("Bot dÈsactivÈ", this.server.getBotSession());
+							this.server.broadcastMessage("Bot d√©sactiv√©", this.server.getBotSession());
 							this.server.disableBot();
 						}
 
@@ -171,7 +171,7 @@ public class ConnectedClient implements Runnable {
 
 						if (alreadyAuth) {
 							session.setConnected(-1);
-							session.setResponseMsg("Vous dÈj‡ authentifiÈ");
+							session.setResponseMsg("Vous d√©j√† authentifi√©");
 							this.sendMessage(session);
 						} else {
 							if (db.login(this.session.getLogin(), this.session.getMessage())) {
